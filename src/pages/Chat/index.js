@@ -7,12 +7,14 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet,Text, View, StatusBar, ScrollView, Image} from 'react-native';
+import { StyleSheet,Text, View, StatusBar, ScrollView, Image, TouchableOpacity, Keyboard} from 'react-native';
 import { withTheme } from 'styled-components';
 import TextBox from '../../components/TextBox';
 import ChatMessage from '../../components/ChatMessage';
 import ChatSection from '../../components/ChatSection';
 import Avatar from '../../components/Avatar'
+import { connect } from 'react-redux';
+import { loadMessages, sendMessage } from '../../store/chat/actions';
 
 const styles = StyleSheet.create({
   main:{
@@ -34,8 +36,102 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class Chat extends Component {
+
+class Chat extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      messageText:''
+    }
+  }
+
+  componentDidMount(){
+    this.props.loadMessages(1);
+  }
+
+  equals = (a,b)=>{
+    /*if(b.id){
+      return a.id==b.id;
+    }*/
+    return a.id==b;
+  }
+
+   processMessages = (messages=[])=>{
+     const days = ["Monday","Tuesday","Wednesday","Thirsday","Friday","Saturday","Sunday"],
+     months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+     formatNumber = (num)=>{
+       if(num<10){
+         return "0"+num;
+       }
+       return num;
+     }
+     messages = messages.map(message => {
+       const date = new Date(message.createdAt.split("+")[0]+"Z");
+       message.day = days[(date.getDay())]+","+months[date.getMonth()-1]+" "+date.getDate();
+       message.time = (formatNumber(date.getHours()%12))+":"+(formatNumber(date.getMinutes()))+" "+(date.getHours()>=12?"PM":"AM");
+       return message;
+     });
+     const groups = {};
+     for(let msg of messages){
+       if(!groups[msg.day]){
+        groups[msg.day] = [];
+       }
+       groups[msg.day].push(msg);
+     }     
+     return groups;
+   }
+
+   mapMessageWithSections = (messages={})=>{
+     const ui = [];
+    for(let key in messages){
+       ui.push(<ChatSection title={key} key={key}/>)
+       Array.prototype.push.apply(ui,this.mapMessages(messages[key])) 
+     }
+     return ui;
+   }
+
+   mapMessages = (messages=[])=>{
+     const { profile } = this.props
+     return messages.map(msg=>(
+      <ChatMessage message={msg.message} timestamp={msg.time} from={!this.equals(profile,msg.userId)} key={msg.id}/>
+     ));
+   }
+
+   onTextChange = (text)=>{
+     this.setState((prevState)=>({
+       messageText : text
+     }));
+   }
+
+   onSendHandler = ()=>{
+     const {profile} = this.props;
+     this.props.sendMessage(    {
+      "message": this.state.messageText,
+      "messageStatus": "PENDING",
+      "messageType": "TEXT",
+      "userId": profile.id,
+      "conversationId": 1
+    });
+     this.setState({
+       messageText:''
+     });
+   }
+
+   handleScrollToEnd = ()=>{
+     if(this.scrollView){
+       this.scrollView.scrollToEnd({animated: true});
+     }
+   }
+
+   onTextBoxFocus = ()=>{
+     setTimeout(this.handleScrollToEnd,100);
+   }
+
   render() {
+    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus} = this,
+    { messages=[] } = props,
+    { messageText } = state;
     return (
       <>
       <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
@@ -50,42 +146,48 @@ export default class Chat extends Component {
         <Image style={{height:50,resizeMode:'contain'}} source={require('../../../assets/images/logo.png')}/>
         </View>
         <View style={styles.scroll}>
-        <ScrollView>
-          <ChatSection title="Wednesday,March 25"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatSection title="Wednesday,March 25"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM" from/>
-          <ChatSection title="Wednesday,March 25"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
-          <ChatMessage message="Hey Arthus, how are you?" timestamp="10:30AM"/>
+        <ScrollView
+          ref={ref => {this.scrollView = ref}}
+          onContentSizeChange={handleScrollToEnd}        
+        >
+          {
+            this.mapMessageWithSections(this.processMessages(messages))
+          }
         </ScrollView>
         </View>
         <View style={{flexDirection:'row',padding: 5,paddingTop: 10,justifyContent:'center',alignItems:'center'}}>
-          <Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'red' }}>B</Text>
+          <Text style={{ fontFamily: 'GDSfont', fontSize: 25,padding:10,color:'red' }}>B</Text>
           <View style={{
             flex: 1,
             marginLeft:5,
             marginRight:5
           }}>
-          <TextBox />
-          <Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'red',position:'absolute',right:0 }}>C</Text>
+          <TextBox  
+          value={messageText} 
+          onChangeText={onTextChange}
+          onFocus={onTextBoxFocus}
+          onTouchEnd= {onTextBoxFocus}
+          />
+          {/*<Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'red',position:'absolute',right:0 }}>C</Text>*/}
           </View>
-          {/*<Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'red' }}>C</Text>*/}
+          <TouchableOpacity onPress={onSendHandler} disabled={!messageText}><Text style={{ fontFamily: 'GDSfont', fontSize: 30,padding:10,color:'red' }}>C</Text></TouchableOpacity>
         </View>
       </View>
       </>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  messages:state.chat.messages,
+  loading:state.chat.loading,
+  error:state.chat.error,
+  profile: state.profile.profile
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadMessages: (conversationId)=>dispatch(loadMessages(conversationId)),
+  sendMessage: (message)=>dispatch(sendMessage(message))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Chat);

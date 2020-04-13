@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { TextInput, StyleSheet } from 'react-native'
 
-
 const TextBox = (props) => {
-    const {style={}} = props    
+    const {style={},...restProps} = props
     return <TextInput style={{...styles.input,...style}}
         underlineColorAndroid="transparent"
         placeholder="Type here something..."
         placeholderTextColor="#c3c3c3"
         autoCapitalize="none"
-        onChangeText={() => { }} />
+        {...restProps}
+         />
 }
 
 export default TextBox
