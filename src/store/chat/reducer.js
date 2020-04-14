@@ -43,16 +43,25 @@ sendingMessageFailed = (state,action)=>{
 sendingMedia = (state,action)=>{
     return {
         ...state,
-        sendingMedia:true
+        sendingMedia:true,
+        messages:[...state.messages,action.message]
     }
 },
 
 sendingMediaSuccess = (state,action)=>{
+    const newMessages = [...state.messages],
+    ind = newMessages.findIndex(msg=>msg.id==action.data.prevId)
+    newMessages[ind] = {
+        ...newMessages[ind],
+        createdAt: action.data.createdA,
+        messageStatus: action.data.messageStatus
+    }
     return {
         ...state,
         sendingMedia:false,
         sendingMediaSuccess:true,
-        sendingMediaFailed:false
+        sendingMediaFailed:false,
+        messages:newMessages
     }
 },
 

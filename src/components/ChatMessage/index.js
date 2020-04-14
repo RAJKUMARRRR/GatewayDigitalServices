@@ -1,15 +1,20 @@
 import React from 'react'
-import {View,StyleSheet, Text} from 'react-native'
+import {View,StyleSheet,Text,Image, TouchableOpacity} from 'react-native'
 
 const ChatMessage = (props)=>{
-    const { message='', timestamp='', from } = props
+    const { message, from, onImageTapHandler } = props
     const containerStyle = {...styles.container, ...(from ? styles.containerFrom:styles.containerTo)}
     const textStyle = from ? styles.textFrom:styles.textTo
     const timestampStype = from ? styles.timestamp : {...styles.timestamp,...styles.timestampFrom}
     return (
         <View style={containerStyle}>
-            <Text style={{...textStyle,...styles.message}}>{message}</Text>
-            <Text style={{...textStyle,...timestampStype}}>{timestamp}</Text>
+            {
+                message.messageType==="MEDIA" && <TouchableOpacity onPress={()=>onImageTapHandler&&onImageTapHandler(message.media.sourceUrl)}><Image source={{uri:message.media.sourceUrl}} style={styles.imageNormal}/></TouchableOpacity>
+            }
+            {
+                message.messageType==="TEXT" && <Text style={{...textStyle,...styles.message}}>{message.message}</Text>
+            }            
+            <Text style={{...textStyle,...timestampStype}}>{message.messageStatus=="PENDING"? "sending..." : message.time}</Text>
         </View>
     )
 }
@@ -26,8 +31,8 @@ const styles = StyleSheet.create({
         margin: 20,
         marginTop: 10,
         marginBottom:0,
-        flex:1,
-        flexDirection:'row'
+        /*flex:1,
+        flexDirection:'row'*/
     },
     containerFrom:{
         backgroundColor: 'white',
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     },
     message:{
         alignSelf:'flex-start',
-        paddingBottom:10
+        /*paddingBottom:10*/
     },
     timestamp:{
         color:'#c3c3c3',
@@ -60,5 +65,9 @@ const styles = StyleSheet.create({
     },
     timestampFrom:{
         color:'white',
+    },
+    imageNormal:{
+        width: 200,
+        height: 200
     }
 })

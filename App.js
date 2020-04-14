@@ -12,6 +12,30 @@ import { CHAT } from './api';
 import Chat from './src/pages/Chat';
 import store from './src/store/store';
 
+
+
+
+
+/*XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+  return global._fetch(uri, options, ...args).then((response) => {
+    console.log('Fetch', { request: { uri, options, ...args }, response });
+    return response;
+  });
+};*/
+GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
+
+
+
+
+
+
+
+
 export default class App extends Component {
 
   constructor(props) {

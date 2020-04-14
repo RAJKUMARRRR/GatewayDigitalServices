@@ -7,14 +7,28 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet,Text, View, StatusBar, ScrollView, Image, TouchableOpacity, Keyboard} from 'react-native';
-import { withTheme } from 'styled-components';
+import { 
+  StyleSheet,
+  Text, 
+  View, 
+  StatusBar, 
+  ScrollView, 
+  Image, 
+  TouchableOpacity, 
+  Keyboard,
+  PermissionsAndroid,
+  Platform,
+  BackHandler
+} from 'react-native';
 import TextBox from '../../components/TextBox';
 import ChatMessage from '../../components/ChatMessage';
 import ChatSection from '../../components/ChatSection';
 import Avatar from '../../components/Avatar'
 import { connect } from 'react-redux';
-import { loadMessages, sendMessage } from '../../store/chat/actions';
+import { loadMessages, sendMessage, sendMedia } from '../../store/chat/actions';
+import ImagePicker from 'react-native-image-picker'
+import ImageView from '../../components/ImageView';
+
 
 const styles = StyleSheet.create({
   main:{
@@ -37,17 +51,65 @@ const styles = StyleSheet.create({
 });
 
 
+const requestCameraPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      {
+        title: "Cool Photo App Camera Permission",
+        message:
+          "Cool Photo App needs access to your camera " +
+          "so you can take awesome pictures.",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the camera");
+    } else {
+      console.log("Camera permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+
+
 class Chat extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      messageText:''
+      messageText:'',
+      photo:null,
+      viewImage:false,
+      selectedImageSource:''
     }
+    BackHandler.addEventListener('hardwareBackPress',this.onDeviceBackHandler);
   }
+
+  
 
   componentDidMount(){
     this.props.loadMessages(1);
+  }
+
+  onDeviceBackHandler = ()=>{
+    if(this.state.viewImage){
+      this.setState({
+        viewImage:false,
+        selectedImageSource:''
+      });
+      return true;
+    }
+    return false;
+  }
+
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress',this.onDeviceBackHandler);
   }
 
   equals = (a,b)=>{
@@ -67,7 +129,7 @@ class Chat extends Component {
        return num;
      }
      messages = messages.map(message => {
-       const date = new Date(message.createdAt.split("+")[0]+"Z");
+       const date =  message.createdAt ?  new Date(message.createdAt.split("+")[0]+"Z") : new Date();
        message.day = days[(date.getDay())]+","+months[date.getMonth()-1]+" "+date.getDate();
        message.time = (formatNumber(date.getHours()%12))+":"+(formatNumber(date.getMinutes()))+" "+(date.getHours()>=12?"PM":"AM");
        return message;
@@ -94,7 +156,7 @@ class Chat extends Component {
    mapMessages = (messages=[])=>{
      const { profile } = this.props
      return messages.map(msg=>(
-      <ChatMessage message={msg.message} timestamp={msg.time} from={!this.equals(profile,msg.userId)} key={msg.id}/>
+      <ChatMessage message={msg} from={!this.equals(profile,msg.userId)} key={msg.id} onImageTapHandler={this.onImageTapHandler}/>
      ));
    }
 
@@ -108,7 +170,7 @@ class Chat extends Component {
      const {profile} = this.props;
      this.props.sendMessage(    {
       "message": this.state.messageText,
-      "messageStatus": "PENDING",
+      "messageStatus": "SEND",
       "messageType": "TEXT",
       "userId": profile.id,
       "conversationId": 1
@@ -128,14 +190,50 @@ class Chat extends Component {
      setTimeout(this.handleScrollToEnd,100);
    }
 
+   createFormData = (photo, body) => {
+    return photo;
+  };
+  
+
+   handleChoosePhoto = () => {
+    const {profile} = this.props;
+    const options = {
+    }
+    ImagePicker.showImagePicker(options, response => {
+      if(response.error){
+        requestCameraPermission();
+      }
+      if (response.uri) {
+        this.setState({ photo: response },()=>{
+          this.props.sendMedia(this.state.photo,profile.id,1);
+        })
+      }
+    })
+  }
+
+  onImageTapHandler = (source)=>{
+    this.setState({
+      viewImage:true,
+      selectedImageSource:source
+    });
+  }
+
+  handleImageViewClose = ()=>{
+    this.setState({
+      viewImage:false,
+      selectedImageSource:''
+    });
+  }
+
   render() {
-    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus} = this,
+    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus, handleChoosePhoto, handleImageViewClose} = this,
     { messages=[] } = props,
-    { messageText } = state;
+    { messageText, viewImage, selectedImageSource } = state;
     return (
       <>
       <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
       <View style={styles.main}>
+        {viewImage && <ImageView source={selectedImageSource} onCloseHandler={handleImageViewClose}/>}
         <View style={{flexDirection:'row',justifyContent:'flex-start',width:'100%',alignItems:'center'}}>
           <Text style={{marginRight:'auto',padding:15,paddingBottom:5,paddingTop:5}}>Welcome!</Text>
           <Avatar style={{margin:5}}/>
@@ -156,7 +254,7 @@ class Chat extends Component {
         </ScrollView>
         </View>
         <View style={{flexDirection:'row',padding: 5,paddingTop: 10,justifyContent:'center',alignItems:'center'}}>
-          <Text style={{ fontFamily: 'GDSfont', fontSize: 25,padding:10,color:'red' }}>B</Text>
+          <TouchableOpacity onPress={handleChoosePhoto}><Text style={{ fontFamily: 'GDSfont', fontSize: 25,padding:10,color:'red' }}>B</Text></TouchableOpacity>
           <View style={{
             flex: 1,
             marginLeft:5,
@@ -187,7 +285,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loadMessages: (conversationId)=>dispatch(loadMessages(conversationId)),
-  sendMessage: (message)=>dispatch(sendMessage(message))
+  sendMessage: (message)=>dispatch(sendMessage(message)),
+  sendMedia: (data,userId,conversationId)=>dispatch(sendMedia(data,userId,conversationId))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Chat);
