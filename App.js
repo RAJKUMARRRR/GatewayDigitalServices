@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { CHAT } from './api';
 import Chat from './src/pages/Chat';
 import store from './src/store/store';
+import Login from './src/pages/Login';
 
 
 
@@ -79,7 +80,7 @@ export default class App extends Component {
 
   render() {
     return <Provider store={store}>
-      <Chat/>
+      <Login/>
     </Provider>
   }
 }

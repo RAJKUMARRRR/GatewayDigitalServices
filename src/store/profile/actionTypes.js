@@ -1,0 +1,4 @@
+export const SEND_OTP_START = "SEND_OTP_START";
+export const SEND_OTP_SUCCESS = "SEND_OTP_SUCCESS";
+export const SEND_OTP_FAILED = "SEND_OTP_FAILED";
+
