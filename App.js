@@ -8,79 +8,13 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { CHAT } from './api';
-import Chat from './src/pages/Chat';
 import store from './src/store/store';
-import Login from './src/pages/Login';
+import MainApp from './src/MainApp';
 
-
-
-
-
-/*XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
-    GLOBAL.originalXMLHttpRequest :
-    GLOBAL.XMLHttpRequest;
-
-global._fetch = fetch;
-global.fetch = function (uri, options, ...args) {
-  return global._fetch(uri, options, ...args).then((response) => {
-    console.log('Fetch', { request: { uri, options, ...args }, response });
-    return response;
-  });
-};*/
 GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
 
-
-
-
-
-
-
-
 export default class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: [],
-      profile: {
-        "id": 102,
-        "createdAt": "2020-04-11T11:10:06.000+0000",
-        "updatedAt": "2020-04-11T11:10:06.000+0000",
-        "phone": "8501096987",
-        "username": "root",
-        "accountStatus": null
-      }
-    }
-  }
-
-
-  loadAppinfo = () => {
-    fetch(CHAT+"?conversationId=1")
-      .then((response) => response.json())
-      .then((response) => {
-        alert(JSON.stringify(response));
-        this.setState({
-          loading: false,
-          messages:response
-        })
-      })
-      .catch((error) => {
-        alert("Error:" + JSON.stringify(error));
-        this.setState({
-          loading: false,
-          error:error
-        })
-      });
-    }
-
-  componentDidMount() {
-    //this.loadAppinfo();
-  }
-
   render() {
-    return <Provider store={store}>
-      <Login/>
-    </Provider>
+    return <Provider store={store}><MainApp/></Provider>
   }
 }

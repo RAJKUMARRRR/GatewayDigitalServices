@@ -7,15 +7,23 @@ const ChatMessage = (props)=>{
     const textStyle = from ? styles.textFrom:styles.textTo
     const timestampStype = from ? styles.timestamp : {...styles.timestamp,...styles.timestampFrom}
     return (
-        <View style={containerStyle}>
+        <>
             {
-                message.messageType==="MEDIA" && <TouchableOpacity onPress={()=>onImageTapHandler&&onImageTapHandler(message.media.sourceUrl)}><Image source={{uri:message.media.sourceUrl}} style={styles.imageNormal}/></TouchableOpacity>
+                message.messageType==="MEDIA" && 
+                <View style={{...containerStyle,...{flexDirection:'column',padding: 5}}}>
+                  <TouchableOpacity><Image source={{uri:message.media.sourceUrl}} style={styles.imageNormal}/></TouchableOpacity>
+                  <View onTouchEnd={()=>onImageTapHandler&&onImageTapHandler(message.media.sourceUrl)} style={{backgroundColor:'rgba(0,0,0,.2)',position:'absolute',right:5,bottom:5,width: 200,height:"100%",borderRadius:5}}></View>
+                  <Text style={{...textStyle,...timestampStype,...{color:'white',position:'absolute',right:15,bottom:15}}}>{message.messageStatus=="PENDING"? "sending..." : message.time}</Text>
+                  </View>
             }
             {
-                message.messageType==="TEXT" && <Text style={{...textStyle,...styles.message}}>{message.message}</Text>
-            }            
-            <Text style={{...textStyle,...timestampStype}}>{message.messageStatus=="PENDING"? "sending..." : message.time}</Text>
-        </View>
+                message.messageType==="TEXT" && 
+                <View style={containerStyle}>
+                  <Text style={{...textStyle,...styles.message}}>{message.message}</Text>
+                  <Text style={{...textStyle,...timestampStype}}>{message.messageStatus=="PENDING"? "sending..." : message.time}</Text>
+                </View>
+            }
+        </>
     )
 }
 
@@ -24,15 +32,15 @@ export default ChatMessage
 
 const styles = StyleSheet.create({
     container:{
-        padding:15,
+        padding:10,
         paddingTop: 5,
         paddingBottom: 5,
         borderRadius: 10,
         margin: 20,
         marginTop: 10,
         marginBottom:0,
-        /*flex:1,
-        flexDirection:'row'*/
+        flex:1,
+        flexDirection:'row'
     },
     containerFrom:{
         backgroundColor: 'white',
@@ -68,6 +76,7 @@ const styles = StyleSheet.create({
     },
     imageNormal:{
         width: 200,
-        height: 200
+        height: 200,
+        borderRadius: 7,
     }
 })

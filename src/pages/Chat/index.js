@@ -93,7 +93,7 @@ class Chat extends Component {
   
 
   componentDidMount(){
-    this.props.loadMessages(1);
+    this.props.loadMessages(this.props.conversationId);
   }
 
   onDeviceBackHandler = ()=>{
@@ -120,7 +120,7 @@ class Chat extends Component {
   }
 
    processMessages = (messages=[])=>{
-     const days = ["Monday","Tuesday","Wednesday","Thirsday","Friday","Saturday","Sunday"],
+     const days = ["Sunday","Monday","Tuesday","Wednesday","Thirsday","Friday","Saturday"],
      months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
      formatNumber = (num)=>{
        if(num<10){
@@ -167,13 +167,15 @@ class Chat extends Component {
    }
 
    onSendHandler = ()=>{
-     const {profile} = this.props;
+     const {profile,conversationId} = this.props;
      this.props.sendMessage(    {
       "message": this.state.messageText,
       "messageStatus": "SEND",
       "messageType": "TEXT",
       "userId": profile.id,
-      "conversationId": 1
+      "conversationId": conversationId,
+      "messageSource":"USER",
+      "systemMessage":null,
     });
      this.setState({
        messageText:''
@@ -225,9 +227,13 @@ class Chat extends Component {
     });
   }
 
+  onBackHandler = ()=>{
+    this.props.navigate("conversations");
+  }
+
   render() {
-    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus, handleChoosePhoto, handleImageViewClose} = this,
-    { messages=[] } = props,
+    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus, handleChoosePhoto, handleImageViewClose,onBackHandler} = this,
+    { messages=[], profile={} } = props,
     { messageText, viewImage, selectedImageSource } = state;
     return (
       <>
@@ -236,11 +242,11 @@ class Chat extends Component {
         {viewImage && <ImageView source={selectedImageSource} onCloseHandler={handleImageViewClose}/>}
         <View style={{flexDirection:'row',justifyContent:'flex-start',width:'100%',alignItems:'center'}}>
           <Text style={{marginRight:'auto',padding:15,paddingBottom:5,paddingTop:5}}>Welcome!</Text>
-          <Avatar style={{margin:5}}/>
-          <Text style={{marginRight:15}}>Arthur Mack</Text>
+          {profile && <Avatar style={{margin:5}} sourceUrl={profile.profileImageUrl}/>}
+          {profile&&profile.username&&<Text style={{marginRight:15}}>{profile.username}</Text>}
         </View>
         <View style={{flexDirection:'row',justifyContent:'center',width:'100%',alignItems:'center',height:100}}>          
-        <Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'black',position:'absolute',left:10 }}>A</Text>
+        { profile && profile.role=='ADMIN' && <TouchableOpacity onPress={onBackHandler} style={{padding:10,color:'black',position:'absolute',left:10 }}><Text style={{fontFamily: 'GDSfont', fontSize: 20}}>A</Text></TouchableOpacity>}
         <Image style={{height:50,resizeMode:'contain'}} source={require('../../../assets/images/logo.png')}/>
         </View>
         <View style={styles.scroll}>
@@ -280,7 +286,8 @@ const mapStateToProps = state => ({
   messages:state.chat.messages,
   loading:state.chat.loading,
   error:state.chat.error,
-  profile: state.profile.profile
+  profile: state.profile.profile,
+  authToken: state.profile.authToken
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,6 +1,7 @@
 import { SEND_MESSAGE, SEND_MESSAGE_SUCCESS, SEND_MEDIA_START, SEND_MEDIA_SUCCESS, SEND_MEDIA_FAILED, FETCH_CHAT_START, FETCH_CHAT_SUCCESS, SEND_MESSAGE_FAILED } from "./actionTypes"
-import { CHAT, BASE_URL } from '../../../api';
+import { MESSAGES_URL,SEND_MEDIA_URL,SEND_MESSAGE_URL } from '../../data/servicesUrls';
 import RNFS from 'react-native-fs';
+import {getRequest,postRequest} from '../../data/services';
 
 export const sendMessageStart = (message) => {
     return {
@@ -11,23 +12,15 @@ export const sendMessageStart = (message) => {
 
 
 const sendMessageHelper = (msg)=>{
-    return  fetch(CHAT, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(msg),
-      });
+    return  postRequest(SEND_MESSAGE_URL,msg);
 }
 
 export const sendMessage = (message)=>{
     return (dispatch)=>{
         dispatch(sendMessageStart(message));
         sendMessageHelper(message)
-          .then((response) => response.json())
           .then(res=>{
-              dispatch(sendMessageSuccess(res));
+              dispatch(sendMessageSuccess(res.data));
           }).catch(error=>{
               dispatch(sendMessageFailed(error));
           });
@@ -67,28 +60,21 @@ export const sendMedia = (media,userId,conversationId)=>{
         dispatch(sendMediaStart(msg));
         RNFS.readFile(media.path, 'base64')
         .then(base64=>{
-            fetch(BASE_URL +  '/upload',{
-                method:'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                  },
-                  body:JSON.stringify({
-                      base64: "data:image/png;base64,"+base64
-                  })
-            }).then(res=>res.json())
+            postRequest(SEND_MEDIA_URL,{
+                base64: "data:image/png;base64,"+base64
+            })
             .then(res=>{
                 let oldId = msg.id,oldUrl=msg.media.sourceUrl;
-                msg.media.sourceUrl = res.secure_url;
+                msg.media.sourceUrl = res.data.secure_url;
                 msg.messageStatus = "RECEIVED";
                 delete msg.id;
                 sendMessageHelper(msg)
                 .then((res)=>{
                     dispatch(sendMediaSuccess({
                         prevId: oldId,
-                        createdAt:res.createdAt,
-                        messageStatus: res.messageStatus
-                    }));    
+                        createdAt:res.data.createdAt,
+                        messageStatus: res.data.messageStatus
+                    }));
                 })
                 .catch((err)=>{
                     dispatch(sendMediaFailed(err));
@@ -147,20 +133,12 @@ export const loadMessagesFailed = (error) => {
 export const loadMessages = (conversationId) => {
     return (dispatch) => {
         dispatch(loadMessagesStart());
-        /*fetchMessages()
-            .then((res) => {
-                dispatch(loadMessagesSuccess(res.messages));
-            })
-            .catch((error) => {
-                dispatch(loadMessagesFailed(error));
-            });*/
-            fetch(CHAT+"?conversationId="+conversationId)
-            .then((response) => response.json())
+            getRequest(MESSAGES_URL+"?conversationId="+conversationId)
             .then((response) => {
-                dispatch(loadMessagesSuccess(response));
+                dispatch(loadMessagesSuccess(response.data));
             })
             .catch((error) => {
                 dispatch(loadMessagesFailed(error));
-            });      
+            });   
     }
 }

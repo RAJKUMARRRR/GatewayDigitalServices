@@ -15,6 +15,7 @@
     "react-native": "0.62.1",
     "react-native-fs": "^2.16.6",
     "react-native-image-picker": "^2.3.1",
+    "react-native-otp-verify": "^1.0.3",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

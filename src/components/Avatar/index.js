@@ -3,14 +3,16 @@ import { Image, StyleSheet, View } from 'react-native'
 
 
 const Avatar = (props) => {
-    const { style = {} } = props
-    
-    return <View style={{...styles.container,...style}}> 
+    const { style = {}, sourceUrl='' } = props,
+    {logo={}} = style,
+    url = (sourceUrl=="null" || !sourceUrl) ? 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png' : sourceUrl
+    //alert(url);
+    delete style.logo
+    return <View style={{...styles.container,...style}}>
     <Image
-            style={styles.logo}
+            style={{...styles.logo,...logo}}
             source={{
-                uri:
-                    'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg',
+                uri: url
             }}
         />
     </View>
@@ -24,13 +26,15 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderColor: 'red',
         borderWidth: 1,
-        padding: 2
+        padding: 2,
+        justifyContent:'center',
+        alignItems:'center'
     },
     logo: {
         width: 5,
         height: 5,
         borderRadius: 100,
         borderWidth: 1,
-        padding: 10
+        padding: 10,
     },
 });

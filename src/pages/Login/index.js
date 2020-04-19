@@ -10,8 +10,9 @@ import React, {Component} from 'react';
 import { StyleSheet,Text, View, StatusBar, ScrollView, Image, Button, TouchableOpacity} from 'react-native';
 import KeyPad from '../../components/KeyPad'
 import { connect } from 'react-redux';
-import { stat } from 'react-native-fs';
 import { sendOTP } from '../../store/profile/actions';
+import RNOtpVerify from 'react-native-otp-verify';
+
 
 const styles = StyleSheet.create({
   main:{
@@ -75,6 +76,14 @@ class Chat extends Component {
     }
   }
 
+  otpHandler = (message) => {
+    const otp = /(\d{6})/g.exec(message)[1];
+    console.log(otp)
+    this.props.navigate("otp",{otp:otp,mobile:this.state.mobile});
+    this.setState({ otp });    
+    RNOtpVerify.removeListener();
+  }
+
   onChangeHandler = (val)=>{
     this.setState({
       mobile:val
@@ -83,19 +92,26 @@ class Chat extends Component {
 
   onLoginHandler = ()=>{
     this.props.sendOTP(this.state.mobile);    
+    RNOtpVerify.getOtp()
+        .then(p => RNOtpVerify.addListener(this.otpHandler))
+        .catch(p => console.log(p));
+  }
+
+  componentWillUnmount(){
+    RNOtpVerify.removeListener();
   }
 
   render() {
     const { onChangeHandler, props, state:{ mobile }, onLoginHandler } = this,
     { sendingOTP, sendOTPSuccess, sendOTPError } = props
     if(sendingOTP){
-      alert("sendingOTP");
+      console.log("sendingOTP");
     }
     if(sendOTPSuccess){
-      alert("OTP sent successfully..");
+      console.log("OTP sent successfully..");
     }
     if(sendOTPError){
-      alert("Failed to send OTP:"+JSON.stringify(sendOTPError));
+      console.log("Failed to send OTP:"+JSON.stringify(sendOTPError));
     }
     return (
       <>
