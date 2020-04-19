@@ -79,7 +79,7 @@ class Chat extends Component {
   otpHandler = (message) => {
     const otp = /(\d{6})/g.exec(message)[1];
     console.log(otp)
-    this.props.navigate("otp",{otp:otp,mobile:this.state.mobile});
+    this.props.navigation.navigate("OTP",{otp:otp,mobile:this.state.mobile});
     this.setState({ otp });    
     RNOtpVerify.removeListener();
   }
@@ -127,7 +127,7 @@ class Chat extends Component {
         </TouchableOpacity>
         }
         <View style={styles.keypad}>
-            <KeyPad onChange={onChangeHandler} max={10}/>
+            <KeyPad onChange={onChangeHandler} max={10} initialValue={""}/>
         </View>
       </View>
       </>

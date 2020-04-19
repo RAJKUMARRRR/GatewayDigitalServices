@@ -167,7 +167,7 @@ class Chat extends Component {
    }
 
    onSendHandler = ()=>{
-     const {profile,conversationId} = this.props;
+     const {profile,route, conversationId} = this.props;
      this.props.sendMessage(    {
       "message": this.state.messageText,
       "messageStatus": "SEND",
@@ -198,7 +198,7 @@ class Chat extends Component {
   
 
    handleChoosePhoto = () => {
-    const {profile} = this.props;
+    const {profile,conversationId} = this.props;
     const options = {
     }
     ImagePicker.showImagePicker(options, response => {
@@ -207,7 +207,7 @@ class Chat extends Component {
       }
       if (response.uri) {
         this.setState({ photo: response },()=>{
-          this.props.sendMedia(this.state.photo,profile.id,1);
+          this.props.sendMedia(this.state.photo,profile.id,conversationId);
         })
       }
     })
@@ -228,7 +228,7 @@ class Chat extends Component {
   }
 
   onBackHandler = ()=>{
-    this.props.navigate("conversations");
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -240,11 +240,6 @@ class Chat extends Component {
       <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
       <View style={styles.main}>
         {viewImage && <ImageView source={selectedImageSource} onCloseHandler={handleImageViewClose}/>}
-        <View style={{flexDirection:'row',justifyContent:'flex-start',width:'100%',alignItems:'center'}}>
-          <Text style={{marginRight:'auto',padding:15,paddingBottom:5,paddingTop:5}}>Welcome!</Text>
-          {profile && <Avatar style={{margin:5}} sourceUrl={profile.profileImageUrl}/>}
-          {profile&&profile.username&&<Text style={{marginRight:15}}>{profile.username}</Text>}
-        </View>
         <View style={{flexDirection:'row',justifyContent:'center',width:'100%',alignItems:'center',height:100}}>          
         { profile && profile.role=='ADMIN' && <TouchableOpacity onPress={onBackHandler} style={{padding:10,color:'black',position:'absolute',left:10 }}><Text style={{fontFamily: 'GDSfont', fontSize: 20}}>A</Text></TouchableOpacity>}
         <Image style={{height:50,resizeMode:'contain'}} source={require('../../../assets/images/logo.png')}/>

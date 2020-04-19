@@ -8,6 +8,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Text } from 'react-native';
 import Chat from './pages/Chat';
 import store from './store/store';
 import Login from './pages/Login';
@@ -16,14 +17,19 @@ import Conversations from './pages/Conversations';
 import localStore from './data/localStore';
 import { verifyOTPSuccess, loadProfile } from './store/profile/actions';
 import ProgressBar from './components/ProgressBar';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Header from './components/Header';
 
+const Stack = createStackNavigator();
 
 class MainApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: '',
-      options: {}
+      options: {},
+      appLoaded: false
     }
   }
 
@@ -32,23 +38,26 @@ class MainApp extends Component {
       .then(token => {
         if (!token) {
           this.setState({
-            currentPage: 'login'
+            currentPage: 'LOGIN',
+            appLoaded: true
           });
         } else {
           this.props.setToken(token);
-          this.props.loadProfile((profile)=>{
+          this.props.loadProfile((profile) => {
             this.setState({
-                currentPage: profile.role=="ADMIN"?'conversations':'chat',
-                options:{
-                  conversationId:profile.conversations[0].id
-                }
-              });
+              currentPage: profile.role == "ADMIN" ? 'Conversations' : 'Chat',
+              options: {
+                conversationId: profile.conversations[0].id
+              },
+              appLoaded: true
+            });
           });
         }
       })
       .catch(error => {
         this.setState({
-          currentPage: 'login'
+          currentPage: 'login',
+          appLoaded: true
         });
       });
   }
@@ -59,27 +68,37 @@ class MainApp extends Component {
       options
     });
   }
+  
+  getHeaderComponent = ()=>{
+    const { profile } = this.props
+    return ()=><Header profileImageUrl={profile.profileImageUrl} username={profile.username}/>
+  }
+
   render() {
-    const { currentPage, options } = this.state,
-    { showProgress,profile } = this.props
-    return <>
-      {currentPage == "login" && <Login navigate={this.setCurrentPage} {...options} />}
-      {currentPage == "otp" && <OTP navigate={this.setCurrentPage} {...options} />}
-      {currentPage == "chat" && <Chat navigate={this.setCurrentPage} {...options} />}
-      {currentPage == "conversations" && <Conversations navigate={this.setCurrentPage} {...options} />}
-      {showProgress && <ProgressBar/>}
-    </>
+    const { currentPage, options, appLoaded } = this.state,
+      { showProgress, profile } = this.props
+    return appLoaded ? <NavigationContainer>
+      <Stack.Navigator initialRouteName={currentPage}>
+        <Stack.Screen name="Login" component={Login} options={{ ...options, ...{ headerShown: false } }} />
+        <Stack.Screen name="OTP" component={OTP} options={{ ...options, ...{ headerShown: false } }} />
+        <Stack.Screen name="Chat" options={{ ...options, ...{ header: this.getHeaderComponent() } }}>
+          {(props)=><Chat {...props} conversationId={options.conversationId}/>}
+        </Stack.Screen>
+        <Stack.Screen name="Conversations" component={Conversations} options={{ ...options, ...{ transitionSpec:{open:{animation:"spring"}}, header: this.getHeaderComponent() } }} />
+      </Stack.Navigator>
+      {showProgress && <ProgressBar />}
+    </NavigationContainer> : <ProgressBar />
   }
 }
 
 const mapStateToProps = state => ({
-    showProgress: state.common.showProgress,
-    profile: state.profile.profile
+  showProgress: state.common.showProgress,
+  profile: state.profile.profile
 });
 
 const mapDispatchToProps = dispatch => ({
-  setToken: (token)=>dispatch(verifyOTPSuccess(token)),
-  loadProfile: (cb)=>dispatch(loadProfile(cb))
+  setToken: (token) => dispatch(verifyOTPSuccess(token)),
+  loadProfile: (cb) => dispatch(loadProfile(cb))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

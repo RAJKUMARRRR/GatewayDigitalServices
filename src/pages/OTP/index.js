@@ -72,29 +72,29 @@ class OTP extends Component {
     constructor(props){
         super(props);
         this.state = {
-            otp:''
+            otp:props.route.params.otp
         }
     }
 
-    static getDerivedStateFromProps(props,state){
+    /*static getDerivedStateFromProps(props,state){
         return {
-            otp: props.otp || ''
+            otp: props.route.params.otp || ''
         }
-    }
+    }*/
 
     onChangeHandler = (val)=>{
         this.setState({
-          mobile:val
+          otp:val
         });
     }
 
     onSubmit = ()=>{
         this.props.verifyOTP({
-            otp: this.state.otp || this.props.otp,
-            mobileNumber: this.props.mobile
+            otp: this.state.otp || this.props.route.params.otp,
+            mobileNumber: this.props.route.params.mobile
         },()=>{
             this.props.loadProfile((profile)=>{
-                this.props.navigate(profile.role=="ADMIN"?'conversations':'chat',{conversationId:profile.conversations[0].id});
+                this.props.navigation.navigate(profile.role=="ADMIN"?'Conversations':'Chat',{conversationId:profile.conversations[0].id,conversations:profile.conversations});
               }); 
         });
     }
@@ -131,7 +131,7 @@ class OTP extends Component {
                         </Text>
                     </TouchableOpacity>
                     <View style={styles.keypad}>
-                        <KeyPad onChange={onChangeHandler} max={6}/>
+                        <KeyPad onChange={onChangeHandler} max={6} initialValue={otp}/>
                     </View>
                 </View>
             </>

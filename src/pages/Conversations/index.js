@@ -7,20 +7,17 @@ import Avatar from '../../components/Avatar';
 class Conversations extends Component{
 
     onConversationSelected = (id)=>{
-        this.props.navigate('chat',{conversationId:id});
+      this.props.navigation.push('Chat',{conversationId:id});
     }
 
     render(){
         const { props, onConversationSelected} = this,
-        { profile={},conversations=[] } = props
+        { profile={},route } = props,
+        { params } = route,
+        { conversations= params.conversations || []  } = props
         return (<>
       <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
       <View style={styles.main}>
-        <View style={{flexDirection:'row',justifyContent:'flex-start',width:'100%',alignItems:'center'}}>
-          <Text style={{marginRight:'auto',padding:15,paddingBottom:5,paddingTop:5}}>Welcome!</Text>
-          {profile && <Avatar style={{margin:5}} sourceUrl={profile.profileImageUrl}/>}
-          {profile&&profile.username&&<Text style={{marginRight:15}}>{profile.username}</Text>}
-        </View>
         <View style={{flexDirection:'row',justifyContent:'center',width:'100%',alignItems:'center',height:100}}>          
         <Image style={{height:50,resizeMode:'contain'}} source={require('../../../assets/images/logo.png')}/>
         </View>
