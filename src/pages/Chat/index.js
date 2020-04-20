@@ -93,7 +93,7 @@ class Chat extends Component {
   
 
   componentDidMount(){
-    this.props.loadMessages(this.props.conversationId);
+    this.props.loadMessages(this.props.conversationId || this.props.route.params.conversationId);
   }
 
   onDeviceBackHandler = ()=>{
@@ -173,7 +173,7 @@ class Chat extends Component {
       "messageStatus": "SEND",
       "messageType": "TEXT",
       "userId": profile.id,
-      "conversationId": conversationId,
+      "conversationId": conversationId || route.params.conversationId,
       "messageSource":"USER",
       "systemMessage":null,
     });
@@ -198,7 +198,7 @@ class Chat extends Component {
   
 
    handleChoosePhoto = () => {
-    const {profile,conversationId} = this.props;
+    const {profile,conversationId,route} = this.props;
     const options = {
     }
     ImagePicker.showImagePicker(options, response => {
@@ -207,7 +207,7 @@ class Chat extends Component {
       }
       if (response.uri) {
         this.setState({ photo: response },()=>{
-          this.props.sendMedia(this.state.photo,profile.id,conversationId);
+          this.props.sendMedia(this.state.photo,profile.id,conversationId||route.params.conversationId);
         })
       }
     })

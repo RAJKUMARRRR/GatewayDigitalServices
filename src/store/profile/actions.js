@@ -1,6 +1,5 @@
-import { SEND_OTP_START, SEND_OTP_SUCCESS, SEND_OTP_FAILED, VERIFY_OTP_START, VERIFY_OTP_SUCCESS, VERIFY_OTP_FAILED, LOAD_PROFILE_START, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED } from "./actionTypes"
+import { SEND_OTP_START, SEND_OTP_SUCCESS, SEND_OTP_FAILED, VERIFY_OTP_START, VERIFY_OTP_SUCCESS, VERIFY_OTP_FAILED, LOAD_PROFILE_START, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED, OTP_RECEIVED } from "./actionTypes"
 import { SEND_OTP_URL, VERIFY_OTP_URL, PROFILE_URL } from "../../data/servicesUrls"
-import axios from 'axios';
 import { getRequest, postRequest } from '../../data/services';
 
 export const sendOTPStart = ()=>{
@@ -22,15 +21,16 @@ export const sendOTPFailed = (error)=>{
     }
 }
 
-export const sendOTP = (mobile)=>{
+export const sendOTP = (mobile,cb)=>{
     return (dispatch)=>{
         dispatch(sendOTPStart());
         getRequest(SEND_OTP_URL+"?mobile="+mobile)
         .then(res=>{
+            cb && cb();
             dispatch(sendOTPSuccess());
         })
         .catch(error=>{
-            dispatch(sendOTPFailed(error))
+            dispatch(sendOTPFailed(error.message))
         });
     }
 }
@@ -68,7 +68,12 @@ export const verifyOTP = (otpRequest,cb)=>{
             cb && cb(res.data);
         })
         .catch(error=>{
-            dispatch(verifyOTPFailed(error))
+            if(error.status == 401){
+                alert("Invalid OTP");
+                dispatch(verifyOTPFailed("Invalid OTP"))
+                return;
+            }
+            dispatch(verifyOTPFailed(error.message))
         });
     }
 }
@@ -104,7 +109,15 @@ export const loadProfile = (cb)=>{
             cb && cb(res.data);
         })
         .catch(error=>{
-            dispatch(loadProfileFailed(error))
+            dispatch(loadProfileFailed(error.message))
         });
+    }
+}
+
+
+export const otpReceived = (otp)=>{
+    return {
+        type: OTP_RECEIVED,
+        otp
     }
 }

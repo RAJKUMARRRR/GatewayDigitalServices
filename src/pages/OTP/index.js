@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, StatusBar, ScrollView, Image, Button, TouchableOpacity } from 'react-native';
 import KeyPad from '../../components/KeyPad'
@@ -68,19 +68,22 @@ const styles = StyleSheet.create({
     }
 });
 
-class OTP extends Component {
+class OTP extends PureComponent {
     constructor(props){
         super(props);
         this.state = {
-            otp:props.route.params.otp
+            otp: '',
+            receivedOtp: null
         }
     }
 
-    /*static getDerivedStateFromProps(props,state){
-        return {
-            otp: props.route.params.otp || ''
-        }
-    }*/
+    static getDerivedStateFromProps(props, state) {
+        if (props.otpReceived != state.receivedOtp)
+            return {
+                otp: props.otpReceived || '',
+                receivedOtp: props.otpReceived
+            }
+    }
 
     onChangeHandler = (val)=>{
         this.setState({
@@ -145,7 +148,8 @@ const mapStateToProps = (state)=>{
       verifyingOTP: state.profile.verifyingOTP,
       verifyOTPError: state.profile.verifyOTPError,
       verifyOTPSuccess: state.profile.verifyOTPSuccess,
-      authToken: state.profile.authToken
+      authToken: state.profile.authToken,
+      otpReceived: state.profile.otpReceived
     }
   }
   

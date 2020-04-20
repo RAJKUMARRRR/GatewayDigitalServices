@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "795830441889",
+    "firebase_url": "https://gds-push.firebaseio.com",
+    "project_id": "gds-push",
+    "storage_bucket": "gds-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795830441889:android:307921d5f1609f53501de0",
+        "android_client_info": {
+          "package_name": "com.postoffice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795830441889-ac3q1cl0ektn4qvm4j9unjci5ej7r5h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1DRXySMTN8oNQvDfITMwVpHk_T7bKZNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795830441889-ac3q1cl0ektn4qvm4j9unjci5ej7r5h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

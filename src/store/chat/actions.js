@@ -22,7 +22,7 @@ export const sendMessage = (message)=>{
           .then(res=>{
               dispatch(sendMessageSuccess(res.data));
           }).catch(error=>{
-              dispatch(sendMessageFailed(error));
+              dispatch(sendMessageFailed(error.message));
           });
         
     }
@@ -51,6 +51,8 @@ export const sendMedia = (media,userId,conversationId)=>{
             "messageType": "MEDIA",
             "userId": userId,
             "conversationId": conversationId,
+            "messageSource":"USER",
+            "systemMessage":null,
             "media":{
                 "mediaTye":"IMAGE",
                 "sourceUrl":media.uri,
@@ -77,7 +79,7 @@ export const sendMedia = (media,userId,conversationId)=>{
                     }));
                 })
                 .catch((err)=>{
-                    dispatch(sendMediaFailed(err));
+                    dispatch(sendMediaFailed(err.message));
                 });
             })
             .catch(err=>alert("Error:"+JSON.stringify(err)));    
@@ -138,7 +140,7 @@ export const loadMessages = (conversationId) => {
                 dispatch(loadMessagesSuccess(response.data));
             })
             .catch((error) => {
-                dispatch(loadMessagesFailed(error));
+                dispatch(loadMessagesFailed(error.message));
             });   
     }
 }

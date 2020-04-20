@@ -2,6 +2,7 @@ import axios from 'axios';
 import { BASE_URL } from './servicesUrls';
 import store from '../store/store';
 import { showProgress, stopProgress } from '../store/common/actions';
+import { processErrorObject } from '../utils/errorHandler';
 
 const dispatch = store.dispatch;
 
@@ -37,6 +38,8 @@ axiosInstance.interceptors.response.use((res) => {
 }, (err) => {
   dispatch(stopProgress());
   console.log("ResponseError:", err);
+  err = processErrorObject(err);
+  alert(err.message);
   return Promise.reject(err);
 });
 

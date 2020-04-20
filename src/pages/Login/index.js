@@ -7,12 +7,65 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet,Text, View, StatusBar, ScrollView, Image, Button, TouchableOpacity} from 'react-native';
+import { StyleSheet,Text, View, StatusBar, Image, TouchableOpacity} from 'react-native';
 import KeyPad from '../../components/KeyPad'
 import { connect } from 'react-redux';
 import { sendOTP } from '../../store/profile/actions';
-import RNOtpVerify from 'react-native-otp-verify';
 
+class Chat extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      mobile:''
+    }
+  }
+
+  onChangeHandler = (val)=>{
+    this.setState({
+      mobile:val
+    });
+  }
+
+  onLoginHandler = ()=>{
+    this.props.sendOTP(this.state.mobile,()=>{
+      this.props.navigation.navigate("OTP",{mobile:this.state.mobile});
+    });
+  }
+
+
+  render() {
+    const { onChangeHandler, props, state:{ mobile }, onLoginHandler } = this,
+    { sendingOTP, sendOTPSuccess, sendOTPError } = props
+    if(sendingOTP){
+      console.log("sendingOTP");
+    }
+    if(sendOTPSuccess){
+      console.log("OTP sent successfully..");
+    }
+    if(sendOTPError){
+      console.log("Failed to send OTP:"+JSON.stringify(sendOTPError));
+    }
+    return (
+      <>
+      <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
+      <View style={styles.main}>
+        <Image style={styles.logo} source={require('../../../assets/images/loginbg.png')}/>
+        <Text style={styles.mobile}>{mobile}</Text>
+        <Text style={styles.mobileHint}>Enter your registered phone number to login</Text>
+        {mobile.length>=10 && <TouchableOpacity style={styles.loginWrapper} disabled={mobile.length<10} onPress={onLoginHandler}>
+            <Text style={styles.login}>
+              Login
+            </Text>
+        </TouchableOpacity>
+        }
+        <View style={styles.keypad}>
+            <KeyPad onChange={onChangeHandler} max={10} initialValue={""}/>
+        </View>
+      </View>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   main:{
@@ -68,72 +121,6 @@ const styles = StyleSheet.create({
   }
 });
 
-class Chat extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      mobile:''
-    }
-  }
-
-  otpHandler = (message) => {
-    const otp = /(\d{6})/g.exec(message)[1];
-    console.log(otp)
-    this.props.navigation.navigate("OTP",{otp:otp,mobile:this.state.mobile});
-    this.setState({ otp });    
-    RNOtpVerify.removeListener();
-  }
-
-  onChangeHandler = (val)=>{
-    this.setState({
-      mobile:val
-    });
-  }
-
-  onLoginHandler = ()=>{
-    this.props.sendOTP(this.state.mobile);    
-    RNOtpVerify.getOtp()
-        .then(p => RNOtpVerify.addListener(this.otpHandler))
-        .catch(p => console.log(p));
-  }
-
-  componentWillUnmount(){
-    RNOtpVerify.removeListener();
-  }
-
-  render() {
-    const { onChangeHandler, props, state:{ mobile }, onLoginHandler } = this,
-    { sendingOTP, sendOTPSuccess, sendOTPError } = props
-    if(sendingOTP){
-      console.log("sendingOTP");
-    }
-    if(sendOTPSuccess){
-      console.log("OTP sent successfully..");
-    }
-    if(sendOTPError){
-      console.log("Failed to send OTP:"+JSON.stringify(sendOTPError));
-    }
-    return (
-      <>
-      <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
-      <View style={styles.main}>
-        <Image style={styles.logo} source={require('../../../assets/images/loginbg.png')}/>
-        <Text style={styles.mobile}>{mobile}</Text>
-        <Text style={styles.mobileHint}>Enter your registered phone number to login</Text>
-        {mobile.length>=10 && <TouchableOpacity style={styles.loginWrapper} disabled={mobile.length<10} onPress={onLoginHandler}>
-            <Text style={styles.login}>
-              Login
-            </Text>
-        </TouchableOpacity>
-        }
-        <View style={styles.keypad}>
-            <KeyPad onChange={onChangeHandler} max={10} initialValue={""}/>
-        </View>
-      </View>
-      </>
-    );
-  }
-}
 
 const mapStateToProps = (state)=>{
   return {
@@ -145,7 +132,7 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = (dispatch)=>{
   return {
-    sendOTP: (mobile)=>dispatch(sendOTP(mobile))
+    sendOTP: (mobile,cb)=>dispatch(sendOTP(mobile,cb))
   }
 }
 

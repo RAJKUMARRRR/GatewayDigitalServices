@@ -1,4 +1,4 @@
-import { SEND_OTP_START, SEND_OTP_SUCCESS, SEND_OTP_FAILED, VERIFY_OTP_START, VERIFY_OTP_SUCCESS, VERIFY_OTP_FAILED, LOAD_PROFILE_START, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED } from "./actionTypes";
+import { SEND_OTP_START, SEND_OTP_SUCCESS, SEND_OTP_FAILED, VERIFY_OTP_START, VERIFY_OTP_SUCCESS, VERIFY_OTP_FAILED, LOAD_PROFILE_START, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED, OTP_RECEIVED } from "./actionTypes";
 import localStore from '../../data/localStore';
 
 const initialData = {
@@ -9,9 +9,16 @@ const initialData = {
     verifyOTPError:null,
     verifyOTPSuccess:false,
     authToken:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4NTAxMDk2OTg3IiwiZXhwIjoxNTg4MDY5Mzc1fQ.9HZ40dl0DkftS1vTPRhlSQpBEIBWuuamLwUYe18HyDqEf1KVHZBVB85bS-tdkFmi34Y8zuRFbcxMKZ_uJ4TjSA',
+    otpReceived:'',
     profile: null,
     loading:false,
     error: null
+},
+otpReceived = (state,action)=>{
+    return {
+        ...state,
+        otpReceived: action.otp
+    }
 },
 loadProfileStart = (state,action)=>{
     return {
@@ -92,6 +99,7 @@ reducer = (state=initialData,action)=>{
         case LOAD_PROFILE_START: return loadProfileStart(state,action);
         case LOAD_PROFILE_SUCCESS: return loadProfileSuccess(state,action);
         case LOAD_PROFILE_FAILED: return loadProfileFailed(state,action);
+        case OTP_RECEIVED: return otpReceived(state,action);
     }
     return state;
 }
