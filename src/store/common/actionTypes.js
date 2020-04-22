@@ -1,2 +1,2 @@
-export const SHOW_PROGRESS = "SHOW_PROGRESS";
-export const STOP_PROGRESS = "STOP_PROGRESS";
+export const SHOW_PROGRESS = 'SHOW_PROGRESS';
+export const STOP_PROGRESS = 'STOP_PROGRESS';

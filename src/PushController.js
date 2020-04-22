@@ -1,65 +1,62 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import PushNotification from "react-native-push-notification";
-import { UPDATE_PROFILE_URL } from "./data/servicesUrls";
-import { setItem } from "./data/localStore";
-import { putRequest } from "./data/services";
-import { connect } from "react-redux";
-import { sendMessageSuccess } from "./store/chat/actions";
+import PushNotification from 'react-native-push-notification';
+import {UPDATE_PROFILE_URL} from './data/servicesUrls';
+import {setItem} from './data/localStore';
+import {putRequest} from './data/services';
+import {connect} from 'react-redux';
+import {sendMessageSuccess} from './store/chat/actions';
 
 class PushController extends Component {
-
-  registerDevice = (token) => {
-    const { profile } = this.props
-    profile['pushToken'] = token
+  registerDevice = token => {
+    const {profile} = this.props;
+    profile.pushToken = token;
     putRequest(UPDATE_PROFILE_URL, profile)
-      .then((response) => {
+      .then(response => {
         console.log(JSON.stringify(response.status));
-        setItem('isRegisteredForPush', "true");
+        setItem('isRegisteredForPush', 'true');
       })
-      .catch((error) => {
-        console.log("Server Down!! Please contact admin.", error);
+      .catch(error => {
+        console.log('Server Down!! Please contact admin.', error);
       });
-  }
-
+  };
 
   registerForPushNotification = () => {
-    const { registerDevice,props } = this;
+    const {registerDevice, props} = this;
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function (token) {
+      onRegister: function(token) {
         //console.log("DeviceId",DeviceInfo.getUniqueId());
-        console.log("TOKEN:", token);
-        AsyncStorage.getItem('isRegisteredForPush').then((val) => {
+        console.log('TOKEN:', token);
+        AsyncStorage.getItem('isRegisteredForPush').then(val => {
           if (!val) {
             registerDevice(token.token);
           }
         });
       },
 
-      onNotification: function (notification) {
-        console.log("NOTIFICATION:", notification);
-        props.addToChat(notification.data)
-        // required on iOS only 
+      onNotification: function(notification) {
+        console.log('NOTIFICATION:', notification);
+        props.addToChat(notification.data);
+        // required on iOS only
         //notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
       // Android only
-      senderID: "795830441889",
+      senderID: '795830441889',
       // iOS only
       permissions: {
         alert: true,
         badge: true,
-        sound: true
+        sound: true,
       },
       popInitialNotification: true,
-      requestPermissions: true
+      requestPermissions: true,
     });
-    PushNotification.requestPermissions("795830441889");
-  }
-
+    PushNotification.requestPermissions('795830441889');
+  };
 
   componentDidMount() {
-    const { registerForPushNotification } = this;
+    const {registerForPushNotification} = this;
     registerForPushNotification();
   }
 
@@ -68,16 +65,17 @@ class PushController extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {};
+};
 
-const mapStateToProps = (state)=>{
+const mapDispatchToProps = dispatch => {
   return {
-  }
-}
+    addToChat: message => dispatch(sendMessageSuccess(message)),
+  };
+};
 
-const mapDispatchToProps = (dispatch)=>{
-  return {
-    addToChat: (message)=>dispatch(sendMessageSuccess(message))
-  }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(PushController)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PushController);
