@@ -7,6 +7,7 @@
  */
 
 import React, {Component} from 'react';
+
 import { 
   StyleSheet,
   Text, 
@@ -18,21 +19,25 @@ import {
   Keyboard,
   PermissionsAndroid,
   Platform,
-  BackHandler
+  BackHandler,
+  Button
 } from 'react-native';
 import TextBox from '../../components/TextBox';
 import ChatMessage from '../../components/ChatMessage';
 import ChatSection from '../../components/ChatSection';
 import Avatar from '../../components/Avatar'
 import { connect } from 'react-redux';
-import { loadMessages, sendMessage, sendMedia } from '../../store/chat/actions';
+import {loadMessages, sendMessage, sendMedia} from '../../store/chat/actions';
 import ImagePicker from 'react-native-image-picker'
 import ImageView from '../../components/ImageView';
+import PushController from '../../PushController';
+import { getRequest } from '../../data/services';
+import { BASE_URL } from '../../data/servicesUrls';
 
 
 const styles = StyleSheet.create({
-  main:{
-    flex:1,
+  main: {
+    flex: 1,
     backgroundColor: 'white',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -85,7 +90,8 @@ class Chat extends Component {
       messageText:'',
       photo:null,
       viewImage:false,
-      selectedImageSource:''
+      selectedImageSource:'',
+      adminSuggessions:[]
     }
     BackHandler.addEventListener('hardwareBackPress',this.onDeviceBackHandler);
   }
@@ -94,6 +100,15 @@ class Chat extends Component {
 
   componentDidMount(){
     this.props.loadMessages(this.props.conversationId || this.props.route.params.conversationId);
+    getRequest(BASE_URL+"/system_messages/admin")
+    .then(res=>{
+      this.setState({
+        adminSuggessions: res.data
+      });
+    })
+    .catch(error=>{
+      alert(JSON.stringify(error));      
+    });
   }
 
   onDeviceBackHandler = ()=>{
@@ -120,6 +135,7 @@ class Chat extends Component {
   }
 
    processMessages = (messages=[])=>{
+     //alert(JSON.stringify(new Date())+"-------"+messages[0].createdAt)
      const days = ["Sunday","Monday","Tuesday","Wednesday","Thirsday","Friday","Saturday"],
      months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
      formatNumber = (num)=>{
@@ -231,10 +247,45 @@ class Chat extends Component {
     this.props.navigation.goBack();
   }
 
+  getSuggessions = (message)=>{
+    const { profile } = this.props
+    if(message.messageSource == "SYSTEM"){
+      const data = profile.id!=message.userId && message.systemMessage && message.systemMessage.children || [];
+      if(data.length<=0&&this.props.profile.role=="ADMIN"){
+        return this.mapSuggessions(this.state.adminSuggessions);
+      }
+      return this.mapSuggessions(data);
+    }
+    if(this.props.profile.role=="ADMIN"){
+      return this.mapSuggessions(this.state.adminSuggessions);
+    }
+  return null;
+  }
+
+  mapSuggessions = (data)=>{
+    return data.map(item=>(<Button title={item.message} key={item.id} onPress={()=>this.onSuggessionClickHandler(item)}></Button>))    
+  }
+
+  onSuggessionClickHandler = (suggession)=>{
+    const {profile,route, conversationId} = this.props;
+    this.props.sendMessage(    {
+     "message": suggession.message,
+     "messageStatus": "SEND",
+     "messageType": "TEXT",
+     "userId": profile.id,
+     "conversationId": conversationId || route.params.conversationId,
+     "messageSource":"SYSTEM",
+     "systemMessage": suggession,
+   });
+    this.setState({
+      messageText:''
+    });
+  }
+
   render() {
-    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus, handleChoosePhoto, handleImageViewClose,onBackHandler} = this,
+    const { props, state, onTextChange, onSendHandler,handleScrollToEnd,onTextBoxFocus, handleChoosePhoto, handleImageViewClose,onBackHandler,getSuggessions,mapSuggessions} = this,
     { messages=[], profile={} } = props,
-    { messageText, viewImage, selectedImageSource } = state;
+    { messageText, viewImage, selectedImageSource, adminSuggessions } = state;
     return (
       <>
       <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1"/>
@@ -252,6 +303,9 @@ class Chat extends Component {
           {
             this.mapMessageWithSections(this.processMessages(messages))
           }
+          {
+            messages.length>0?getSuggessions(messages[messages.length-1]):(mapSuggessions(adminSuggessions))
+          }
         </ScrollView>
         </View>
         <View style={{flexDirection:'row',padding: 5,paddingTop: 10,justifyContent:'center',alignItems:'center'}}>
@@ -267,11 +321,11 @@ class Chat extends Component {
           onFocus={onTextBoxFocus}
           onTouchEnd= {onTextBoxFocus}
           />
-          {/*<Text style={{ fontFamily: 'GDSfont', fontSize: 20,padding:10,color:'red',position:'absolute',right:0 }}>C</Text>*/}
           </View>
           <TouchableOpacity onPress={onSendHandler} disabled={!messageText}><Text style={{ fontFamily: 'GDSfont', fontSize: 30,padding:10,color:'red' }}>C</Text></TouchableOpacity>
         </View>
       </View>
+      {profile && <PushController profile={profile}/>}
       </>
     );
   }

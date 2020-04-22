@@ -10,7 +10,7 @@ const initialData = {
     mediaSendSuccess: false,
     mediaSendFailed: false,
     loading:false,
-    error:null
+    error:null    
 },
 
 sendingMessage = (state,action)=>{
@@ -53,9 +53,11 @@ sendingMediaSuccess = (state,action)=>{
     ind = newMessages.findIndex(msg=>msg.id==action.data.prevId)
     newMessages[ind] = {
         ...newMessages[ind],
-        createdAt: action.data.createdA,
+        createdAt: action.data.createdAt,
         messageStatus: action.data.messageStatus
     }
+    //newMessages[ind].createdAt = action.data.createdAt;
+    //newMessages[ind].messageStatus = action.data.messageStatus;
     return {
         ...state,
         sendingMedia:false,

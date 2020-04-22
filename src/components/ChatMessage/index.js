@@ -10,9 +10,9 @@ const ChatMessage = (props)=>{
         <>
             {
                 message.messageType==="MEDIA" && 
-                <View style={{...containerStyle,...{flexDirection:'column',padding: 5}}}>
+                <View style={{...containerStyle,...{flexDirection:'column',padding: 2,paddingBottom:2,paddingTop:2}}}>
                   <TouchableOpacity><Image source={{uri:message.media.sourceUrl}} style={styles.imageNormal}/></TouchableOpacity>
-                  <View onTouchEnd={()=>onImageTapHandler&&onImageTapHandler(message.media.sourceUrl)} style={{backgroundColor:'rgba(0,0,0,.2)',position:'absolute',right:5,bottom:5,width: 200,height:"100%",borderRadius:5}}></View>
+                  <View onTouchEnd={()=>onImageTapHandler&&onImageTapHandler(message.media.sourceUrl)} style={{backgroundColor:'rgba(0,0,0,.1)',position:'absolute',right:2,bottom:2,width: 200,height:"100%",borderRadius:7}}></View>
                   <Text style={{...textStyle,...timestampStype,...{color:'white',position:'absolute',right:15,bottom:15}}}>{message.messageStatus=="PENDING"? "sending..." : message.time}</Text>
                   </View>
             }
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         marginRight: 80
     },
     containerTo:{
-        backgroundColor: 'red',
+        backgroundColor: '#ecb9c0',
         alignSelf: 'flex-end',
         borderBottomRightRadius: 0,
         marginLeft: 80

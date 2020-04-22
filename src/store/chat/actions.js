@@ -54,7 +54,7 @@ export const sendMedia = (media,userId,conversationId)=>{
             "messageSource":"USER",
             "systemMessage":null,
             "media":{
-                "mediaTye":"IMAGE",
+                "mediaType":"IMAGE",
                 "sourceUrl":media.uri,
                 "filename":"image"
             }
