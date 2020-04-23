@@ -12,6 +12,8 @@ import {
   MESSAGES_URL,
   SEND_MEDIA_URL,
   SEND_MESSAGE_URL,
+  BASE_URL,
+  MARK_CONVERSATION_URL,
 } from '../../data/servicesUrls';
 import RNFS from 'react-native-fs';
 import {getRequest, postRequest} from '../../data/services';
@@ -157,4 +159,10 @@ export const loadMessages = conversationId => {
         dispatch(loadMessagesFailed(error.message));
       });
   };
+};
+
+export const markConversationRead = id => {
+  getRequest(MARK_CONVERSATION_URL + '/' + id)
+    .then(console.log)
+    .catch(console.log);
 };

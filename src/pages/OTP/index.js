@@ -21,6 +21,7 @@ import {
 import KeyPad from '../../components/KeyPad';
 import InputMask from '../../components/InputMask';
 import {verifyOTP, loadProfile} from '../../store/profile/actions';
+import { CONVERSATIONS, CHAT } from '../../constants/screens';
 
 const styles = StyleSheet.create({
   main: {
@@ -110,7 +111,7 @@ class OTP extends PureComponent {
       () => {
         this.props.loadProfile(profile => {
           this.props.navigation.navigate(
-            profile.role == 'ADMIN' ? 'Conversations' : 'Chat',
+            profile.role == 'ADMIN' ? CONVERSATIONS : CHAT,
             {
               conversationId: profile.conversations[0].id,
               conversations: profile.conversations,

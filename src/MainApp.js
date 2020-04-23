@@ -26,6 +26,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import RNOtpVerify from 'react-native-otp-verify';
 import HeaderTwo from './components/HeaderTwo';
 import HeaderOne from './components/HeaderOne';
+import {CONVERSATIONS, CHAT, LOGIN, OTP as OTP_S} from './constants/screens';
+import {updateCurrentScreen} from './store/common/actions';
+import {getActiveRouteState} from './utils/navigation';
 
 const Stack = createStackNavigator();
 
@@ -68,14 +71,14 @@ class MainApp extends Component {
       .then(token => {
         if (!token) {
           this.setState({
-            currentPage: 'LOGIN',
+            currentPage: LOGIN,
             appLoaded: true,
           });
         } else {
           this.props.setToken(token);
           this.props.loadProfile(profile => {
             this.setState({
-              currentPage: profile.role == 'ADMIN' ? 'Conversations' : 'Chat',
+              currentPage: profile.role == 'ADMIN' ? CONVERSATIONS : CHAT,
               options: {
                 conversationId: profile.conversations[0].id,
               },
@@ -86,7 +89,7 @@ class MainApp extends Component {
       })
       .catch(error => {
         this.setState({
-          currentPage: 'login',
+          currentPage: LOGIN,
           appLoaded: true,
         });
       });
@@ -121,31 +124,33 @@ class MainApp extends Component {
     const {currentPage, options, appLoaded} = this.state,
       {showProgress, profile} = this.props;
     return appLoaded ? (
-      <NavigationContainer>
+      <NavigationContainer
+        onStateChange={state =>
+          this.props.updateCurrentScreen(getActiveRouteState(state))
+        }>
         <Stack.Navigator initialRouteName={currentPage}>
           <Stack.Screen
-            name="Login"
+            name={LOGIN}
             component={Login}
             options={{...options, ...{headerShown: false}}}
           />
           <Stack.Screen
-            name="OTP"
+            name={OTP_S}
             component={OTP}
             options={{...options, ...{headerShown: false}}}
           />
           <Stack.Screen
-            name="Chat"
+            name={CHAT}
+            initialParams={{conversationId: options.conversationId}}
             options={{
               ...options,
               ...{headerShown: false},
               /*...{header: this.getHeaderComponent('chat')},*/
             }}>
-            {props => (
-              <Chat {...props} conversationId={options.conversationId} />
-            )}
+            {props => <Chat {...props} />}
           </Stack.Screen>
           <Stack.Screen
-            name="Conversations"
+            name={CONVERSATIONS}
             component={Conversations}
             options={{
               ...options,
@@ -173,6 +178,7 @@ const mapDispatchToProps = dispatch => ({
   setToken: token => dispatch(verifyOTPSuccess(token)),
   loadProfile: cb => dispatch(loadProfile(cb)),
   updateOtp: otp => dispatch(otpReceived(otp)),
+  updateCurrentScreen: screen => dispatch(updateCurrentScreen(screen)),
 });
 
 export default connect(

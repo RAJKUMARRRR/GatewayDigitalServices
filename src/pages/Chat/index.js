@@ -96,9 +96,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.props.loadMessages(
-      this.props.conversationId || this.props.route.params.conversationId,
-    );
+    this.props.loadMessages(this.props.route.params.conversationId);
     getRequest(BASE_URL + '/system_messages/admin')
       .then(res => {
         this.setState({
@@ -219,13 +217,13 @@ class Chat extends Component {
   };
 
   onSendHandler = () => {
-    const {profile, route, conversationId} = this.props;
+    const {profile, route} = this.props;
     this.props.sendMessage({
       message: this.state.messageText,
       messageStatus: 'SEND',
       messageType: 'TEXT',
       userId: profile.id,
-      conversationId: conversationId || route.params.conversationId,
+      conversationId: route.params.conversationId,
       messageSource: 'USER',
       systemMessage: null,
     });
@@ -252,7 +250,7 @@ class Chat extends Component {
   };
 
   handleChoosePhoto = () => {
-    const {profile, conversationId, route} = this.props;
+    const {profile, route} = this.props;
     const options = {};
     ImagePicker.showImagePicker(options, response => {
       if (response.error) {
@@ -263,7 +261,7 @@ class Chat extends Component {
           this.props.sendMedia(
             this.state.photo,
             profile.id,
-            conversationId || route.params.conversationId,
+            route.params.conversationId,
           );
         });
       }
@@ -318,19 +316,20 @@ class Chat extends Component {
   };
 
   onSuggessionClickHandler = suggession => {
-    const {profile, route, conversationId} = this.props;
+    const {profile, route} = this.props;
     this.props.sendMessage({
       message: suggession.message,
       messageStatus: 'SEND',
       messageType: 'TEXT',
       userId: profile.id,
-      conversationId: conversationId || route.params.conversationId,
+      conversationId: route.params.conversationId,
       messageSource: 'SYSTEM',
       systemMessage: suggession,
     });
     this.setState({
       messageText: '',
     });
+    Keyboard.dismiss();
   };
 
   onStopEditing = () => {

@@ -10,6 +10,7 @@ const AvatarListItem = props => {
     id,
     onItemSelected,
     showIndicator = false,
+    unreadCount = 0,
   } = props;
   return (
     <View style={styles.container} onTouchEnd={() => onItemSelected(id)}>
@@ -18,7 +19,7 @@ const AvatarListItem = props => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>
       </View>
-      {showIndicator && <Text style={styles.indicator}>1</Text>}
+      {showIndicator && <Text style={styles.indicator}>{unreadCount}</Text>}
     </View>
   );
 };

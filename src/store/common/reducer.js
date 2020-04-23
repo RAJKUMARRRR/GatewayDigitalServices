@@ -1,7 +1,12 @@
-import {SHOW_PROGRESS, STOP_PROGRESS} from './actionTypes';
+import {
+  SHOW_PROGRESS,
+  STOP_PROGRESS,
+  UPDATE_CURRENT_SCREEN,
+} from './actionTypes';
 
 const initialData = {
     showProgress: false,
+    currentScreen: '',
   },
   showProgress = (state, action) => {
     return {
@@ -15,12 +20,20 @@ const initialData = {
       showProgress: false,
     };
   },
+  updateCurrentScreen = (state, action) => {
+    return {
+      ...state,
+      currentScreen: action.screen.name,
+    };
+  },
   reducer = (state = initialData, action) => {
     switch (action.type) {
       case SHOW_PROGRESS:
         return showProgress(state, action);
       case STOP_PROGRESS:
         return stopProgress(state, action);
+      case UPDATE_CURRENT_SCREEN:
+        return updateCurrentScreen(state, action);
     }
     return state;
   };

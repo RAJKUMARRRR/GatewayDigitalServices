@@ -11,16 +11,22 @@ import {connect} from 'react-redux';
 import AvatarListItem from '../../components/AvatarListItem';
 import PushController from '../../PushController';
 import {loadMessagesSuccess} from '../../store/chat/actions';
+import {
+  loadConversations,
+  markConversationRead,
+} from '../../store/conversations/actions';
+import { CHAT } from '../../constants/screens';
 
 class Conversations extends Component {
   onConversationSelected = ({id, user}) => {
     this.props.resetMessages();
-    this.props.navigation.push('Chat', {
+    markConversationRead(id);
+    this.props.navigation.push(CHAT, {
       conversationId: id,
       user: user,
     });
+    this.unregisterListener = null;
   };
-
   processConversations = (conversations = [], profile = {}) => {
     return conversations.map(con => {
       if (con.userOne.id == profile.id) {
@@ -37,11 +43,21 @@ class Conversations extends Component {
     });
   };
 
+  componentDidMount() {
+    this.unregisterListener = this.props.navigation.addListener('focus', () => {
+      this.props.loadConversations();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unregisterListener && this.unregisterListener();
+  }
+
   render() {
     const {props, onConversationSelected, processConversations} = this,
-      {profile = {}, route} = props,
-      {params} = route,
-      {conversations = params.conversations || []} = props;
+      {profile = {}, route, navigation, conversations = []} = props;
+    // {params} = route,
+    // {conversations = params.conversations || []} = props;
     return (
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1" />
@@ -56,6 +72,7 @@ class Conversations extends Component {
                   key={item.id}
                   id={item.id}
                   showIndicator={item.showNewMessagesIndicator}
+                  unreadCount={item.unreadCount}
                   onItemSelected={() => onConversationSelected(item)}
                 />
               ))}
@@ -89,16 +106,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    conversations: state.profile.profile
-      ? state.profile.profile.conversations
-      : [] || [],
     profile: state.profile.profile,
+    conversations: state.conversations.conversations || [],
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     resetMessages: () => dispatch(loadMessagesSuccess([])),
+    loadConversations: () => dispatch(loadConversations()),
   };
 };
 

@@ -18,6 +18,7 @@ import {
 import KeyPad from '../../components/KeyPad';
 import {connect} from 'react-redux';
 import {sendOTP} from '../../store/profile/actions';
+import {OTP} from '../../constants/screens';
 
 class Chat extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Chat extends Component {
 
   onLoginHandler = () => {
     this.props.sendOTP(this.state.mobile, () => {
-      this.props.navigation.navigate('OTP', {mobile: this.state.mobile});
+      this.props.navigation.navigate(OTP, {mobile: this.state.mobile});
     });
   };
 

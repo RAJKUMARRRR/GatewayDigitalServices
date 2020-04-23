@@ -6,6 +6,8 @@ import {setItem} from './data/localStore';
 import {putRequest} from './data/services';
 import {connect} from 'react-redux';
 import {sendMessageSuccess} from './store/chat/actions';
+import {CONVERSATIONS, CHAT} from './constants/screens';
+import {loadConversations} from './store/conversations/actions';
 
 class PushController extends Component {
   registerDevice = token => {
@@ -37,7 +39,12 @@ class PushController extends Component {
 
       onNotification: function(notification) {
         console.log('NOTIFICATION:', notification);
-        props.addToChat(notification.data);
+        if (props.currentScreen === CHAT) {
+          props.addToChat(notification.data);
+        }
+        if (props.currentScreen === CONVERSATIONS) {
+          props.updateConversations();
+        }
         // required on iOS only
         //notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
@@ -66,12 +73,15 @@ class PushController extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    currentScreen: state.common.currentScreen,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addToChat: message => dispatch(sendMessageSuccess(message)),
+    updateConversations: () => dispatch(loadConversations()),
   };
 };
 
