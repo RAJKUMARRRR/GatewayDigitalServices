@@ -11,10 +11,15 @@ import {Provider} from 'react-redux';
 import store from './src/store/store';
 import MainApp from './src/MainApp';
 import {NavigationContainer} from '@react-navigation/native';
+import SplashScreen from 'react-native-splash-screen';
 
 GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
 
 export default class App extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
     return (
       <Provider store={store}>

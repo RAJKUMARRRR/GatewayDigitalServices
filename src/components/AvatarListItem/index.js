@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   indicator: {
-    backgroundColor: 'red',
+    backgroundColor: '#DA1515',
     width: 20,
     height: 20,
     borderRadius: 100,

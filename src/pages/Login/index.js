@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     letterSpacing: 5,
-    borderColor: 'red',
+    borderColor: '#DA1515',
     borderWidth: 1,
     borderRadius: 100,
     padding: 20,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   loginWrapper: {
     marginTop: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#DA1515',
     borderRadius: 100,
     padding: 10,
     width: '70%',

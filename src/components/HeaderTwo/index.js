@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   back: {
     fontFamily: 'GDSfont',
     fontSize: 20,
-    color: 'red',
+    color: '#DA1515',
   },
   logo: {
     padding: 15,

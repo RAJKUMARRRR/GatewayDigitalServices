@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   resend: {
-    color: 'red',
+    color: '#DA1515',
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   submitWrapper: {
     marginTop: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#DA1515',
     borderRadius: 100,
     padding: 10,
     width: '70%',

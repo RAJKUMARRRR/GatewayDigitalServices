@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "PostOffice.app"
-               BlueprintName = "PostOffice"
-               ReferencedContainer = "container:PostOffice.xcodeproj">
+               BuildableName = "GatewayDigital.app"
+               BlueprintName = "GatewayDigital"
+               ReferencedContainer = "container:GatewayDigital.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "PostOfficeTests.xctest"
                BlueprintName = "PostOfficeTests"
-               ReferencedContainer = "container:PostOffice.xcodeproj">
+               ReferencedContainer = "container:GatewayDigital.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PostOffice.app"
-            BlueprintName = "PostOffice"
-            ReferencedContainer = "container:PostOffice.xcodeproj">
+            BuildableName = "GatewayDigital.app"
+            BlueprintName = "GatewayDigital"
+            ReferencedContainer = "container:GatewayDigital.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PostOffice.app"
-            BlueprintName = "PostOffice"
-            ReferencedContainer = "container:PostOffice.xcodeproj">
+            BuildableName = "GatewayDigital.app"
+            BlueprintName = "GatewayDigital"
+            ReferencedContainer = "container:GatewayDigital.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

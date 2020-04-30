@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
   title: {
     backgroundColor: 'white',
     textAlign: 'center',
-    color: 'red',
+    color: '#DA1515',
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: '#DA1515',
     borderRadius: 100,
     padding: 10,
     paddingTop: 3,

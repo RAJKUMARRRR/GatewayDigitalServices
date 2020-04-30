@@ -21,8 +21,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'PostOffice' do
-  # Pods for PostOffice
+target 'GatewayDigital' do
+  # Pods for GatewayDigital
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -73,10 +73,10 @@ target 'PostOffice' do
   end
 end
 
-target 'PostOffice-tvOS' do
-  # Pods for PostOffice-tvOS
+target 'GatewayDigital-tvOS' do
+  # Pods for GatewayDigital-tvOS
 
-  target 'PostOffice-tvOSTests' do
+  target 'GatewayDigital-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

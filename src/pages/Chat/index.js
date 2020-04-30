@@ -416,7 +416,7 @@ class Chat extends Component {
                   fontFamily: 'GDSfont',
                   fontSize: 25,
                   padding: 10,
-                  color: 'red',
+                  color: '#DA1515',
                 }}>
                 B
               </Text>
@@ -441,7 +441,7 @@ class Chat extends Component {
                   fontFamily: 'GDSfont',
                   fontSize: 30,
                   padding: 10,
-                  color: 'red',
+                  color: '#DA1515',
                 }}>
                 C
               </Text>
