@@ -17,7 +17,7 @@ GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
 
 export default class App extends Component {
   componentDidMount() {
-    SplashScreen.hide();
+    //SplashScreen.hide();
   }
 
   render() {

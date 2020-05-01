@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Logo from '../Logo';
 
-const Header = ({title = 'Welcome!', enableBack, onBack}) => {
+const Header = ({title = 'Welcome!', enableBack=false, onBack}) => {
   return (
     <View style={styles.container}>
       <View style={styles.welcome}>

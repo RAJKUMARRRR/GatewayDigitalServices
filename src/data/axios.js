@@ -62,7 +62,6 @@ axiosInstance.interceptors.response.use(
       store.dispatch(logout());
     } else {
       Alert.alert('Error', err.message);
-      store.dispatch(logout());
     }
     return Promise.reject(err);
   },

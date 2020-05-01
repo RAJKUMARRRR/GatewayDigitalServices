@@ -16,8 +16,17 @@ import {
   markConversationRead,
 } from '../../store/conversations/actions';
 import {CHAT} from '../../constants/screens';
+import SearchBar from '../../components/SearchBar';
 
 class Conversations extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+      searchResult: [],
+    };
+  }
+
   onConversationSelected = ({id, user}) => {
     this.props.resetMessages();
     markConversationRead(id);
@@ -53,8 +62,37 @@ class Conversations extends Component {
     this.unregisterListener && this.unregisterListener();
   }
 
+  onSearchHandler = searchString => {
+    if (!searchString) {
+      this.setState({
+        searchText: '',
+        searchResult: [],
+      });
+      return;
+    }
+    let str = searchString
+      .toString()
+      .trim()
+      .toLowerCase();
+    this.setState({
+      searchText: str,
+      searchResult: this.props.conversations.filter(
+        con =>
+          (con.user.mailBoxNumber + ' ' + con.user.username)
+            .toLowerCase()
+            .indexOf(str) >= 0,
+      ),
+    });
+  };
+
   render() {
-    const {props, onConversationSelected, processConversations} = this,
+    const {
+        props,
+        onConversationSelected,
+        processConversations,
+        state: {searchResult, searchText},
+        onSearchHandler,
+      } = this,
       {profile = {}, route, navigation, conversations = []} = props;
     // {params} = route,
     // {conversations = params.conversations || []} = props;
@@ -63,8 +101,15 @@ class Conversations extends Component {
         <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1" />
         <View style={styles.main}>
           <View style={styles.scroll}>
+            <SearchBar
+              style={{marginLeft: 15, marginRight: 15}}
+              onSearch={onSearchHandler}
+            />
             <ScrollView>
-              {processConversations(conversations, profile || {}).map(item => (
+              {processConversations(
+                searchText ? searchResult : conversations,
+                profile || {},
+              ).map(item => (
                 <AvatarListItem
                   imageUrl={item.user.profileImageUrl}
                   title={item.user.username}

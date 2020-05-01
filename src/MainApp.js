@@ -37,6 +37,7 @@ import {updateCurrentScreen} from './store/common/actions';
 import {getActiveRouteState} from './utils/navigation';
 import {navigationRef} from './utils/navigation';
 import Countries from './pages/Countries';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createStackNavigator();
 
@@ -123,7 +124,6 @@ class MainApp extends Component {
         profileImageUrl={profile.profileImageUrl}
         username={profile.username}
         {...props}
-        enableBack={profile.role == 'ADMIN'}
       />
     );
   };
@@ -131,6 +131,9 @@ class MainApp extends Component {
   render() {
     const {currentPage, options, appLoaded} = this.state,
       {showProgress, profile} = this.props;
+    if (appLoaded) {
+      SplashScreen.hide();
+    }
     return appLoaded ? (
       <NavigationContainer
         onStateChange={state =>
