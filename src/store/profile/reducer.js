@@ -19,8 +19,7 @@ const initialData = {
     verifyingOTP: false,
     verifyOTPError: null,
     verifyOTPSuccess: false,
-    authToken:
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4NTAxMDk2OTg3IiwiZXhwIjoxNTg4MDY5Mzc1fQ.9HZ40dl0DkftS1vTPRhlSQpBEIBWuuamLwUYe18HyDqEf1KVHZBVB85bS-tdkFmi34Y8zuRFbcxMKZ_uJ4TjSA',
+    authToken: null,
     otpReceived: '',
     profile: null,
     loading: false,

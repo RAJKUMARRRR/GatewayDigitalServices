@@ -1,3 +1,13 @@
+import {createRef} from 'react';
+
+export const navigationRef = createRef();
+
+export const navigate = (name, params) => {
+  if (navigationRef) {
+    navigationRef.current.navigate(name, params);
+  }
+};
+
 export const getActiveRouteState = function(route) {
   if (
     !route.routes ||

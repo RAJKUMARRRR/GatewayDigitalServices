@@ -15,7 +15,10 @@ import {
   VERIFY_OTP_URL,
   PROFILE_URL,
 } from '../../data/servicesUrls';
+import {clearStorage} from '../../data/localStore';
 import {getRequest, postRequest} from '../../data/services';
+import {LOGIN} from '../../constants/screens';
+import {navigate} from '../../utils/navigation';
 
 export const sendOTPStart = () => {
   return {
@@ -128,5 +131,13 @@ export const otpReceived = otp => {
   return {
     type: OTP_RECEIVED,
     otp,
+  };
+};
+
+export const logout = () => {
+  return dispatch => {
+    dispatch(verifyOTPSuccess(null));
+    clearStorage();
+    navigate(LOGIN, {});
   };
 };

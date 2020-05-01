@@ -3,12 +3,19 @@ import {BASE_URL} from './servicesUrls';
 import store from '../store/store';
 import {showProgress, stopProgress} from '../store/common/actions';
 import {processErrorObject} from '../utils/errorHandler';
+import {logout} from '../store/profile/actions';
+import {LOGIN, OTP} from '../constants/screens';
+import {Alert} from 'react-native';
 
 const dispatch = store.dispatch;
+const expiredToken =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4NTAxMDk2OTg3IiwiZXhwIjoxNTg4MDY5Mzc1fQ.9HZ40dl0DkftS1vTPRhlSQpBEIBWuuamLwUYe18HyDqEf1KVHZBVB85bS-tdkFmi34Y8zuRFbcxMKZ_uJ4TjSA';
 
 const getHeader = () => {
   return {
-    authorization: 'Bearer ' + store.getState().profile.authToken,
+    authorization: store.getState().profile.authToken
+      ? 'Bearer ' + store.getState().profile.authToken
+      : null,
     accept: 'application/json',
     'content-type': 'application/json',
   };
@@ -43,7 +50,20 @@ axiosInstance.interceptors.response.use(
     console.log('ResponseError:', err);
     err = processErrorObject(err);
     //todo expires token
-    alert(err.message);
+    const currentScreen = store.getState().common.currentScreen;
+    if (
+      err.status == '401' &&
+      (currentScreen != LOGIN || currentScreen != OTP)
+    ) {
+      Alert.alert(
+        'Session Expired',
+        'Your session has expired, Please login again.',
+      );
+      store.dispatch(logout());
+    } else {
+      Alert.alert('Error', err.message);
+      store.dispatch(logout());
+    }
     return Promise.reject(err);
   },
 );

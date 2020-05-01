@@ -15,7 +15,7 @@ import {
   loadConversations,
   markConversationRead,
 } from '../../store/conversations/actions';
-import { CHAT } from '../../constants/screens';
+import {CHAT} from '../../constants/screens';
 
 class Conversations extends Component {
   onConversationSelected = ({id, user}) => {
@@ -64,7 +64,7 @@ class Conversations extends Component {
         <View style={styles.main}>
           <View style={styles.scroll}>
             <ScrollView>
-              {processConversations(conversations, profile).map(item => (
+              {processConversations(conversations, profile || {}).map(item => (
                 <AvatarListItem
                   imageUrl={item.user.profileImageUrl}
                   title={item.user.username}

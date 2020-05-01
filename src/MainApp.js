@@ -29,6 +29,7 @@ import HeaderOne from './components/HeaderOne';
 import {CONVERSATIONS, CHAT, LOGIN, OTP as OTP_S} from './constants/screens';
 import {updateCurrentScreen} from './store/common/actions';
 import {getActiveRouteState} from './utils/navigation';
+import {navigationRef} from './utils/navigation';
 
 const Stack = createStackNavigator();
 
@@ -127,7 +128,8 @@ class MainApp extends Component {
       <NavigationContainer
         onStateChange={state =>
           this.props.updateCurrentScreen(getActiveRouteState(state))
-        }>
+        }
+        ref={navigationRef}>
         <Stack.Navigator initialRouteName={currentPage}>
           <Stack.Screen
             name={LOGIN}

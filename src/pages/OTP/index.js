@@ -20,8 +20,8 @@ import {
 } from 'react-native';
 import KeyPad from '../../components/KeyPad';
 import InputMask from '../../components/InputMask';
-import {verifyOTP, loadProfile} from '../../store/profile/actions';
-import { CONVERSATIONS, CHAT } from '../../constants/screens';
+import {verifyOTP, loadProfile, sendOTP} from '../../store/profile/actions';
+import {CONVERSATIONS, CHAT} from '../../constants/screens';
 
 const styles = StyleSheet.create({
   main: {
@@ -122,12 +122,17 @@ class OTP extends PureComponent {
     );
   };
 
+  resendOTPHandler = () => {
+    this.props.sendOTP(this.props.route.params.mobile, () => {});
+  };
+
   render() {
     const {
         onChangeHandler,
         state: {otp},
         props,
         onSubmit,
+        resendOTPHandler,
       } = this,
       {
         verifyingOTP,
@@ -158,7 +163,9 @@ class OTP extends PureComponent {
             Please enter the 6 digit security code sent to your phone number
           </Text>
           <InputMask style={{marginTop: 30}} value={otp} />
-          <TouchableOpacity style={styles.resendWrapper}>
+          <TouchableOpacity
+            style={styles.resendWrapper}
+            onPress={resendOTPHandler}>
             <Text style={styles.resend}>Re-Send</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.submitWrapper} onPress={onSubmit}>
@@ -187,6 +194,7 @@ const mapDispatchToProps = dispatch => {
   return {
     verifyOTP: (data, cb) => dispatch(verifyOTP(data, cb)),
     loadProfile: cb => dispatch(loadProfile(cb)),
+    sendOTP: (mobile, cb) => dispatch(sendOTP(mobile, cb)),
   };
 };
 

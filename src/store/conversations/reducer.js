@@ -19,7 +19,7 @@ const initialData = {
     return {
       ...state,
       loading: false,
-      conversations: action.conversations,
+      conversations: action.conversations || [],
     };
   },
   loadingConversationsFailed = (state, action) => {
