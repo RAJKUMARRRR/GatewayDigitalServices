@@ -39,10 +39,10 @@ export const sendOTPFailed = error => {
   };
 };
 
-export const sendOTP = (mobile, cb) => {
+export const sendOTP = (data, cb) => {
   return dispatch => {
     dispatch(sendOTPStart());
-    getRequest(SEND_OTP_URL + '?mobile=' + mobile)
+    postRequest(SEND_OTP_URL, data)
       .then(res => {
         cb && cb();
         dispatch(sendOTPSuccess());

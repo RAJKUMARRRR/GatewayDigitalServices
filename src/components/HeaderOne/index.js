@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Logo from '../Logo';
 
-const Header = () => {
+const Header = ({title = 'Welcome!', enableBack, onBack}) => {
   return (
     <View style={styles.container}>
       <View style={styles.welcome}>
-        <Text>Welcome!</Text>
+        {enableBack && (
+          <TouchableOpacity onPress={onBack}>
+            <Text style={styles.back}>A</Text>
+          </TouchableOpacity>
+        )}
+        <Text>{title}</Text>
       </View>
       <View style={styles.logo}>
         <Logo />
@@ -23,6 +28,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   welcome: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 'auto',
     padding: 15,
     paddingBottom: 5,
@@ -32,7 +40,12 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingBottom: 5,
     paddingTop: 5,
-  }
+  },
+  back: {
+    fontFamily: 'GDSfont',
+    fontSize: 15,
+    color: '#000',
+  },
 });
 
 export default Header;

@@ -1,25 +1,31 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import Avatar from '../Avatar';
 
-const AvatarListItem = props => {
+const CountryListItem = props => {
   const {
     imageUrl = '',
     title = '',
     subTitle = '',
     id,
     onItemSelected,
-    showIndicator = false,
-    unreadCount = 0,
+    selected = false,
   } = props;
   return (
     <View style={styles.container} onTouchEnd={() => onItemSelected(id)}>
-      <Avatar sourceUrl={imageUrl} style={styles.avatar} />
+      <Image
+        style={styles.image}
+        source={{
+          uri: imageUrl,
+        }}
+      />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subTitle}>{subTitle}</Text>
+        {/*<Text style={styles.subTitle}>{subTitle}</Text>*/}
       </View>
-      {showIndicator && <Text style={styles.indicator}>{unreadCount}</Text>}
+      <View style={styles.indicator}>
+        {selected && <Text style={styles.circle} />}
+      </View>
     </View>
   );
 };
@@ -49,7 +55,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   title: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   subTitle: {
@@ -58,14 +64,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   indicator: {
-    backgroundColor: '#DA1515',
-    width: 20,
-    height: 20,
-    borderRadius: 100,
-    textAlign: 'center',
-    color: 'white',
     marginRight: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#f7f7f7',
+    padding: 10,
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circle: {
+    backgroundColor: 'blue',
+    width: 12,
+    height: 12,
+    borderRadius: 100,
+  },
+  image: {
+    marginLeft: 10,
+    height: 20,
+    width: 20,
+    padding: 15,
   },
 });
 
-export default AvatarListItem;
+export default CountryListItem;

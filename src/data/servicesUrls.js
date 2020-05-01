@@ -9,3 +9,5 @@ export const VERIFY_OTP_URL = BASE_URL + '/auth/validateOTP';
 export const PROFILE_URL = BASE_URL + '/users/profile';
 export const UPDATE_PROFILE_URL = BASE_URL + '/users';
 export const MARK_CONVERSATION_URL = BASE_URL + '/conversations/mark_read';
+export const REFERENCE_DATA = BASE_URL + '/referenceData';
+export const COUNTRY_CODES = 'countryCodes';

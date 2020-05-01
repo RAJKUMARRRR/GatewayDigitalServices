@@ -18,14 +18,24 @@ import {
 import KeyPad from '../../components/KeyPad';
 import {connect} from 'react-redux';
 import {sendOTP} from '../../store/profile/actions';
-import {OTP} from '../../constants/screens';
+import {OTP, COUNTRIES} from '../../constants/screens';
+import {waitContainer} from '../../hoc/waitContainer';
+import {COUNTRY_CODES} from '../../data/servicesUrls';
 
 class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mobile: '',
+      selectedCountryCode:
+        props.referenceData[0].length > 0 ? this.props.referenceData[0][0] : {},
     };
+  }
+
+  componentDidMount() {
+    /*this.props.navigation.push(COUNTRIES, {
+      countries: this.props.referenceData[0],
+    });*/
   }
 
   onChangeHandler = val => {
@@ -35,8 +45,27 @@ class Chat extends Component {
   };
 
   onLoginHandler = () => {
-    this.props.sendOTP(this.state.mobile, () => {
-      this.props.navigation.navigate(OTP, {mobile: this.state.mobile});
+    this.props.sendOTP(
+      {
+        mobile: this.state.mobile,
+        countryCode: this.state.selectedCountryCode.mobileCode,
+      },
+      () => {
+        this.props.navigation.navigate(OTP, {mobile: this.state.mobile});
+      },
+    );
+  };
+
+  onSelectCountryClickHandler = () => {
+    this.props.navigation.push(COUNTRIES, {
+      countries: this.props.referenceData[0],
+      onCountryselected: this.onCountryselected,
+    });
+  };
+
+  onCountryselected = country => {
+    this.setState({
+      selectedCountryCode: country,
     });
   };
 
@@ -44,8 +73,10 @@ class Chat extends Component {
     const {
         onChangeHandler,
         props,
-        state: {mobile},
+        state: {mobile, selectedCountryCode},
         onLoginHandler,
+        onSelectCountryClickHandler,
+        onCountryselected,
       } = this,
       {sendingOTP, sendOTPSuccess, sendOTPError} = props;
     if (sendingOTP) {
@@ -65,10 +96,22 @@ class Chat extends Component {
             style={styles.logo}
             source={require('../../../assets/images/loginbg.png')}
           />
-          <Text style={styles.mobile}>{mobile}</Text>
-          <Text style={styles.mobileHint}>
-            Enter your registered phone number to login
-          </Text>
+          <View style={styles.mobileWrapper}>
+            <View
+              style={styles.countryCode}
+              onTouchEnd={onSelectCountryClickHandler}>
+              <Text style={{...styles.mobile, ...styles.countryCodeLabel}}>
+                {selectedCountryCode.mobileCode}
+              </Text>
+              <Text style={styles.mobileHint}>Select</Text>
+            </View>
+            <View style={styles.mobileNumber}>
+              <Text style={styles.mobile}>{mobile}</Text>
+              <Text style={styles.mobileHint}>
+                Enter your registered phone number to login
+              </Text>
+            </View>
+          </View>
           {mobile.length >= 10 && (
             <TouchableOpacity
               style={styles.loginWrapper}
@@ -99,23 +142,42 @@ const styles = StyleSheet.create({
     marginTop: -50,
     resizeMode: 'contain',
   },
-  mobile: {
+  mobileWrapper: {
     marginTop: -50,
-    fontSize: 20,
+    width: '90%',
+    flexDirection: 'row',
+  },
+  countryCode: {
+    flexWrap: 'nowrap',
+    paddingRight: 10,
+  },
+  countryCodeLabel: {
+    width: 50,
+    color: '#c1c1c1',
+    fontWeight: 'bold',
+    padding: 0,
+    letterSpacing: 0,
+  },
+  mobileNumber: {
+    flex: 1,
+  },
+  mobile: {
+    height: 50,
+    color: '#c1c1c1',
+    fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 5,
     borderColor: '#DA1515',
     borderWidth: 1,
-    borderRadius: 100,
+    borderRadius: 50,
     padding: 20,
     paddingBottom: 10,
     paddingTop: 10,
-    width: '70%',
     textAlign: 'center',
+    textAlignVertical: 'center',
     backgroundColor: 'white',
   },
   mobileHint: {
-    width: '70%',
     fontSize: 12,
     textAlign: 'center',
   },
@@ -154,7 +216,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Chat);
+export default waitContainer(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Chat),
+  [COUNTRY_CODES],
+);

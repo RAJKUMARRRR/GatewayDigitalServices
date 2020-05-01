@@ -26,10 +26,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import RNOtpVerify from 'react-native-otp-verify';
 import HeaderTwo from './components/HeaderTwo';
 import HeaderOne from './components/HeaderOne';
-import {CONVERSATIONS, CHAT, LOGIN, OTP as OTP_S} from './constants/screens';
+import {
+  CONVERSATIONS,
+  CHAT,
+  LOGIN,
+  OTP as OTP_S,
+  COUNTRIES,
+} from './constants/screens';
 import {updateCurrentScreen} from './store/common/actions';
 import {getActiveRouteState} from './utils/navigation';
 import {navigationRef} from './utils/navigation';
+import Countries from './pages/Countries';
 
 const Stack = createStackNavigator();
 
@@ -162,6 +169,16 @@ class MainApp extends Component {
               },
             }}
           />
+          <Stack.Screen
+            name={COUNTRIES}
+            initialParams={{countries: []}}
+            options={{
+              ...options,
+              ...{headerShown: false},
+              /*...{header: this.getHeaderComponent('chat')},*/
+            }}>
+            {props => <Countries {...props} />}
+          </Stack.Screen>
         </Stack.Navigator>
         {showProgress && <ProgressBar />}
       </NavigationContainer>
