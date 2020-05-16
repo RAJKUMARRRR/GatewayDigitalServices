@@ -3,10 +3,11 @@ import {
   STOP_PROGRESS,
   UPDATE_CURRENT_SCREEN,
 } from './actionTypes';
+import {CONVERSATIONS} from '../../constants/screens';
 
 const initialData = {
     showProgress: false,
-    currentScreen: '',
+    currentScreen: CONVERSATIONS,
   },
   showProgress = (state, action) => {
     return {

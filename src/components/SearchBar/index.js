@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import {TextInput, StyleSheet, View, Text} from 'react-native';
 
 const SearchBar = props => {
-  const {style = {}, onSearch, ...restProps} = props;
+  const {style = {}, onSearch, placeholder, ...restProps} = props;
   return (
     <View style={{...styles.inputWrapper, ...style}}>
       <TextInput
         style={styles.input}
         underlineColorAndroid="transparent"
-        placeholder="Search mailbox number..."
+        placeholder={placeholder}
         placeholderTextColor="#c3c3c3"
         autoCapitalize="none"
         onChangeText={onSearch}

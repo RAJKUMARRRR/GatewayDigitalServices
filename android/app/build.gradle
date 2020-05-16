@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.postoffice"
+        applicationId "com.gds"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

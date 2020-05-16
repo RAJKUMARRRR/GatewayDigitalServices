@@ -21,6 +21,7 @@ import {sendOTP} from '../../store/profile/actions';
 import {OTP, COUNTRIES} from '../../constants/screens';
 import {waitContainer} from '../../hoc/waitContainer';
 import {COUNTRY_CODES} from '../../data/servicesUrls';
+import SplashScreen from 'react-native-splash-screen';
 
 class Chat extends Component {
   constructor(props) {
@@ -33,9 +34,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    /*this.props.navigation.push(COUNTRIES, {
-      countries: this.props.referenceData[0],
-    });*/
+    SplashScreen.hide();
   }
 
   onChangeHandler = val => {

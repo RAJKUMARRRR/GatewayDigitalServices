@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginRight: 80,
   },
   containerTo: {
-    backgroundColor: '#ecb9c0',
+    backgroundColor: '#E0E0E0',
     alignSelf: 'flex-end',
     borderBottomRightRadius: 0,
     marginLeft: 80,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   textTo: {
-    color: 'white',
+    color: 'black',
   },
   message: {
     alignSelf: 'flex-start',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   timestampFrom: {
-    color: 'white',
+    color: 'grey',
   },
   imageNormal: {
     width: 200,

@@ -36,6 +36,7 @@ import {BASE_URL} from '../../data/servicesUrls';
 import Suggession from '../../components/Suggession';
 import HeaderTwo from '../../components/HeaderTwo';
 import HeaderThree from '../../components/HeaderThree';
+import SplashScreen from 'react-native-splash-screen';
 
 const styles = StyleSheet.create({
   main: {
@@ -106,7 +107,8 @@ class Chat extends Component {
       .catch(error => {
         alert(JSON.stringify(error));
       });
-  }
+      SplashScreen.hide();
+    }
 
   onDeviceBackHandler = () => {
     if (this.state.viewImage) {

@@ -2,10 +2,46 @@ import React, {Component} from 'react';
 import {View, StyleSheet, StatusBar, ScrollView} from 'react-native';
 import CountryListItem from '../../components/CountryListItem';
 import Header from '../../components/HeaderOne';
+import SearchBar from '../../components/SearchBar';
 
 class Countries extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+      searchResult: [],
+    };
+  }
+
+  onSearchHandler = searchString => {
+    if (!searchString) {
+      this.setState({
+        searchText: '',
+        searchResult: [],
+      });
+      return;
+    }
+    let str = searchString
+      .toString()
+      .trim()
+      .toLowerCase();
+    this.setState({
+      searchText: str,
+      searchResult: this.props.route.params.countries.filter(
+        con =>
+          (con.title + ' ' + con.countryCodeTwo + ' ' + con.countryCodeThree)
+            .toLowerCase()
+            .indexOf(str) >= 0,
+      ),
+    });
+  };
+
   render() {
-    const {props} = this,
+    const {
+        props,
+        onSearchHandler,
+        state: {searchText, searchResult = []},
+      } = this,
       {countries = [], onCountryselected = () => 1} = props.route.params;
     return (
       <>
@@ -17,8 +53,13 @@ class Countries extends Component {
             title="Select Country"
           />
           <View style={styles.scroll}>
+            <SearchBar
+              style={{marginLeft: 15, marginRight: 15}}
+              onSearch={onSearchHandler}
+              placeholder="Search for country"
+            />
             <ScrollView>
-              {countries.map(item => (
+              {(searchText ? searchResult : countries).map(item => (
                 <CountryListItem
                   imageUrl={
                     'https://www.countryflags.io/' +

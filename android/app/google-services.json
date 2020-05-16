@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "795830441889",
-    "firebase_url": "https://gds-push.firebaseio.com",
-    "project_id": "gds-push",
-    "storage_bucket": "gds-push.appspot.com"
+    "project_number": "861088027944",
+    "firebase_url": "https://gatewaydigitalsolution.firebaseio.com",
+    "project_id": "gatewaydigitalsolution",
+    "storage_bucket": "gatewaydigitalsolution.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:795830441889:android:307921d5f1609f53501de0",
+        "mobilesdk_app_id": "1:861088027944:android:cb27a6402a5c394ea82c1d",
         "android_client_info": {
-          "package_name": "com.postoffice"
+          "package_name": "com.gds"
         }
       },
       "oauth_client": [
         {
-          "client_id": "795830441889-ac3q1cl0ektn4qvm4j9unjci5ej7r5h7.apps.googleusercontent.com",
+          "client_id": "861088027944-2rihpl1bbj8cf47jfbf7dp7p1qkml3vf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC1DRXySMTN8oNQvDfITMwVpHk_T7bKZNc"
+          "current_key": "AIzaSyDrPAfHVs1Crt7sjkjSUlBNHUBKIMVg5ws"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "795830441889-ac3q1cl0ektn4qvm4j9unjci5ej7r5h7.apps.googleusercontent.com",
+              "client_id": "861088027944-2rihpl1bbj8cf47jfbf7dp7p1qkml3vf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

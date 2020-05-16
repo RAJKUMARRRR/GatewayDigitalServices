@@ -7,19 +7,40 @@
 		</item>
 	</style>
 	<style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-		<!--
-		<item name="android:background">
-		@drawable/background_splash
-		</item>
-		-->
 		<item name="android:statusBarColor">
 			@color/background
 		</item>
-		<item name="android:windowBackground">
+        <item name="android:windowBackground">@drawable/splash</item>
+		<!--<item name="android:windowBackground">
 			@drawable/splash
 		</item>
-       <item name="android:windowTranslucentStatus">true</item>
-       <item name="android:windowTranslucentNavigation">true</item>
+		<item name="android:windowTranslucentStatus">
+			true
+		</item>
+		<item name="android:windowTranslucentNavigation">
+			true
+		</item>
+		<item name="android:windowNoTitle">
+			true
+		</item>
+		<item name="android:windowFullscreen">
+			true
+		</item>
+		<item name="android:windowActionBar">
+			true
+		</item>
+		<item name="android:windowContentOverlay">
+			@null
+		</item>
+		<item name="android:windowDrawsSystemBarBackgrounds">
+			false
+		</item>-->
+        <!--<item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
 	</style>
 	<style name="SplashStatusBarTheme" parent="SplashScreen_SplashTheme">
 		<item name="android:statusBarColor">

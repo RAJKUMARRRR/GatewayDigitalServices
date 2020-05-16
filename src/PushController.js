@@ -49,7 +49,7 @@ class PushController extends Component {
         //notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
       // Android only
-      senderID: '795830441889',
+      senderID: '861088027944',
       // iOS only
       permissions: {
         alert: true,
@@ -59,7 +59,7 @@ class PushController extends Component {
       popInitialNotification: true,
       requestPermissions: true,
     });
-    PushNotification.requestPermissions('795830441889');
+    PushNotification.requestPermissions('861088027944');
   };
 
   componentDidMount() {

@@ -17,6 +17,7 @@ import {
 } from '../../store/conversations/actions';
 import {CHAT} from '../../constants/screens';
 import SearchBar from '../../components/SearchBar';
+import SplashScreen from 'react-native-splash-screen';
 
 class Conversations extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ class Conversations extends Component {
     this.unregisterListener = this.props.navigation.addListener('focus', () => {
       this.props.loadConversations();
     });
+    SplashScreen.hide();
   }
 
   componentWillUnmount() {
@@ -63,7 +65,7 @@ class Conversations extends Component {
   }
 
   onSearchHandler = searchString => {
-    if (!searchString) {
+    if (!searchString || !this.props.conversations) {
       this.setState({
         searchText: '',
         searchResult: [],
@@ -76,7 +78,10 @@ class Conversations extends Component {
       .toLowerCase();
     this.setState({
       searchText: str,
-      searchResult: this.props.conversations.filter(
+      searchResult: this.processConversations(
+        this.props.conversations,
+        this.props.profile,
+      ).filter(
         con =>
           (con.user.mailBoxNumber + ' ' + con.user.username)
             .toLowerCase()
@@ -104,6 +109,7 @@ class Conversations extends Component {
             <SearchBar
               style={{marginLeft: 15, marginRight: 15}}
               onSearch={onSearchHandler}
+              placeholder="Search mailbox number..."
             />
             <ScrollView>
               {processConversations(
