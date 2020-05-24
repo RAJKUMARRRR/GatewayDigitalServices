@@ -1,4 +1,4 @@
-//export const BASE_URL = "http://192.168.1.3:8080";
+//export const BASE_URL = "http://192.168.1.2:8080";
 export const BASE_URL = 'https://gds-chat-server-prod.herokuapp.com';//''https://gds-chat-server.herokuapp.com';
 export const CONVERSATIONS_URL = BASE_URL + '/users/conversations';
 export const MESSAGES_URL = BASE_URL + '/conversations/messages';

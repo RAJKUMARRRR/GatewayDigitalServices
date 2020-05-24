@@ -83,6 +83,7 @@ export const sendMedia = (media, userId, conversationId) => {
             let oldId = msg.id,
               oldUrl = msg.media.sourceUrl;
             msg.media.sourceUrl = res.data.secure_url;
+            msg.media.filename = res.data.public_id;
             msg.messageStatus = 'RECEIVED';
             delete msg.id;
             sendMessageHelper(msg)

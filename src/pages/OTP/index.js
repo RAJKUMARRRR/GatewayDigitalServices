@@ -113,7 +113,10 @@ class OTP extends PureComponent {
           this.props.navigation.navigate(
             profile.role == 'ADMIN' ? CONVERSATIONS : CHAT,
             {
-              conversationId: profile.conversations[0].id,
+              conversationId:
+                profile.conversations.length > 0
+                  ? profile.conversations[0].id
+                  : null,
               conversations: profile.conversations,
             },
           );
@@ -123,7 +126,13 @@ class OTP extends PureComponent {
   };
 
   resendOTPHandler = () => {
-    this.props.sendOTP(this.props.route.params.mobile, () => {});
+    this.props.sendOTP(
+      {
+        mobile: this.props.route.params.mobile,
+        countryCode: this.props.route.params.countryCode,
+      },
+      () => {},
+    );
   };
 
   render() {

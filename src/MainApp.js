@@ -88,7 +88,10 @@ class MainApp extends Component {
             this.setState({
               currentPage: profile.role == 'ADMIN' ? CONVERSATIONS : CHAT,
               options: {
-                conversationId: profile.conversations[0].id,
+                conversationId:
+                  profile.conversations.length > 0
+                    ? profile.conversations[0].id
+                    : null,
               },
               appLoaded: true,
             });

@@ -39,15 +39,16 @@ export const sendOTPFailed = error => {
   };
 };
 
-export const sendOTP = (data, cb) => {
+export const sendOTP = (data, cb, err) => {
   return dispatch => {
     dispatch(sendOTPStart());
     postRequest(SEND_OTP_URL, data)
       .then(res => {
-        cb && cb();
+        cb && cb(res);
         dispatch(sendOTPSuccess());
       })
       .catch(error => {
+        err && err(error);
         dispatch(sendOTPFailed(error.message));
       });
   };

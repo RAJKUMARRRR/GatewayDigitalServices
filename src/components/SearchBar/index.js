@@ -14,7 +14,7 @@ const SearchBar = props => {
         onChangeText={onSearch}
         {...restProps}
       />
-      <Text style={styles.searchIcon}>C</Text>
+      <Text style={styles.searchIcon}>E</Text>
     </View>
   );
 };
