@@ -8,6 +8,9 @@ import {connect} from 'react-redux';
 import {sendMessageSuccess} from './store/chat/actions';
 import {CONVERSATIONS, CHAT} from './constants/screens';
 import {loadConversations} from './store/conversations/actions';
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+import { Alert } from 'react-native';
+
 
 class PushController extends Component {
   registerDevice = token => {
@@ -24,11 +27,51 @@ class PushController extends Component {
   };
 
   registerForPushNotification = () => {
+    alert("registering");
     const {registerDevice, props} = this;
+    const onRegistered = (deviceToken) => {
+      alert('Registered For Remote Push', `Device Token: ${deviceToken}`, [
+        {
+          text: 'Dismiss',
+          onPress: null,
+        },
+      ]);
+    };
+  
+    const onRegistrationError = (error) => {
+      alert(
+        'Failed To Register For Remote Push'+`Error (${error.code}): ${error.message}`
+      );
+      alert(JSON.stringify(error));
+    };
+  
+    const onRemoteNotification = (notification) => {
+      const result = `Message: ${notification.getMessage()};\n
+        badge: ${notification.getBadgeCount()};\n
+        sound: ${notification.getSound()};\n
+        category: ${notification.getCategory()};\n
+        content-available: ${notification.getContentAvailable()}.`;
+  
+      alert('Push Notification Received', result, [
+        {
+          text: 'Dismiss',
+          onPress: null,
+        },
+      ]);
+    };
+
+    PushNotificationIOS.addEventListener('register', onRegistered);
+    PushNotificationIOS.addEventListener(
+      'registrationError',
+      onRegistrationError,
+    );
+    PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
-        //console.log("DeviceId",DeviceInfo.getUniqueId());
+        alert("on register");
+        console.log("DeviceId",DeviceInfo.getUniqueId());
         console.log('TOKEN:', token);
         AsyncStorage.getItem('isRegisteredForPush').then(val => {
           if (!val) {
@@ -46,7 +89,7 @@ class PushController extends Component {
           props.updateConversations();
         }
         // required on iOS only
-        //notification.finish(PushNotificationIOS.FetchResult.NoData);
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
       // Android only
       senderID: '861088027944',
@@ -59,7 +102,7 @@ class PushController extends Component {
       popInitialNotification: true,
       requestPermissions: true,
     });
-    PushNotification.requestPermissions('861088027944');
+    //PushNotification.requestPermissions('861088027944');
   };
 
   componentDidMount() {

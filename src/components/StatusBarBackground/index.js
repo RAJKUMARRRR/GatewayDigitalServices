@@ -12,7 +12,7 @@ export default StatusBarBackground;
 
 const styles = StyleSheet.create({
     statusBarBackground:{
-        height: (Platform.OS === 'ios') ? 25 : 0,
+        height: (Platform.OS === 'ios') ? 30 : 0,
         backgroundColor: '#f1f1f1'
     }
 });

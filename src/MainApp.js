@@ -169,7 +169,7 @@ class MainApp extends Component {
               ...options,
               ...{
                 transitionSpec: {open: {animation: 'spring'}},
-                header: this.getHeaderComponent(),
+                header: ()=>null,//this.getHeaderComponent(),
               },
             }}
           />

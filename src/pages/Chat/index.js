@@ -30,7 +30,7 @@ import {connect} from 'react-redux';
 import {loadMessages, sendMessage, sendMedia} from '../../store/chat/actions';
 import ImagePicker from 'react-native-image-picker';
 import ImageView from '../../components/ImageView';
-//import PushController from '../../PushController';
+import PushController from '../../PushController';
 import {getRequest} from '../../data/services';
 import {BASE_URL} from '../../data/servicesUrls';
 import Suggession from '../../components/Suggession';
@@ -451,7 +451,7 @@ class Chat extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        {/*profile && <PushController profile={profile} />*/}
+        {profile && <PushController profile={profile} />}
       </>
     );
   }

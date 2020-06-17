@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import AvatarListItem from '../../components/AvatarListItem';
-//import PushController from '../../PushController';
+import PushController from '../../PushController';
 import {loadMessagesSuccess} from '../../store/chat/actions';
 import {
   loadConversations,
@@ -18,6 +18,7 @@ import {
 import {CHAT} from '../../constants/screens';
 import SearchBar from '../../components/SearchBar';
 import SplashScreen from 'react-native-splash-screen';
+import HeaderOne from '../../components/HeaderOne';
 
 class Conversations extends Component {
   constructor(props) {
@@ -105,6 +106,9 @@ class Conversations extends Component {
       <>
         <StatusBar barStyle="dark-content" backgroundColor="#f1f1f1" />
         <View style={styles.main}>
+          <HeaderOne
+              username={profile.username}
+            />
           <View style={styles.scroll}>
             <SearchBar
               style={{marginLeft: 15, marginRight: 15}}
@@ -130,7 +134,7 @@ class Conversations extends Component {
             </ScrollView>
           </View>
         </View>
-        {/*profile && <PushController profile={profile} />*/}
+        {profile && <PushController profile={profile} />}
       </>
     );
   }

@@ -19,8 +19,9 @@
 		2DCD954D1E0B4F2C00145EB5 /* GatewayDigitalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GatewayDigitalTests.m */; };
 		323845878C76CF60B245CDF7 /* libPods-GatewayDigital-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EF0AD2483F03CF48269E4E0 /* libPods-GatewayDigital-tvOSTests.a */; };
 		41B61A2C7699880FDD953807 /* libPods-GatewayDigital-GatewayDigitalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDFEDD8EA12A168544CCD46F /* libPods-GatewayDigital-GatewayDigitalTests.a */; };
-		B14A79D0F2153300A695A083 /* libPods-GatewayDigital-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18260D767A7A0371426ED008 /* libPods-GatewayDigital-tvOS.a */; };
 		5165D7796E284D06B80C4084 /* GDSfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 472A58BF17F3455D9C18300B /* GDSfont.ttf */; };
+		6BB10D21249A408100877C64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6BB10D20249A408100877C64 /* GoogleService-Info.plist */; };
+		B14A79D0F2153300A695A083 /* libPods-GatewayDigital-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18260D767A7A0371426ED008 /* libPods-GatewayDigital-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		2B251CCE99106EA8D0CE2879 /* Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-GatewayDigitalTests/Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* GatewayDigital-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GatewayDigital-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* GatewayDigital-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GatewayDigital-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		472A58BF17F3455D9C18300B /* GDSfont.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GDSfont.ttf; path = ../assets/fonts/GDSfont.ttf; sourceTree = "<group>"; };
+		6BB10D20249A408100877C64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		805766C8346162C7954EC7AD /* Pods-GatewayDigital-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-tvOS.release.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-tvOS/Pods-GatewayDigital-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		80920DF65F3390AA8AD624B7 /* Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-GatewayDigitalTests/Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig"; sourceTree = "<group>"; };
 		8EF0AD2483F03CF48269E4E0 /* libPods-GatewayDigital-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GatewayDigital-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +71,6 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F8EADDEB585B938B7A44F103 /* Pods-GatewayDigital-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-tvOS/Pods-GatewayDigital-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		FDFEDD8EA12A168544CCD46F /* libPods-GatewayDigital-GatewayDigitalTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GatewayDigital-GatewayDigitalTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		472A58BF17F3455D9C18300B /* GDSfont.ttf */ = {isa = PBXFileReference; name = "GDSfont.ttf"; path = "../assets/fonts/GDSfont.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,7 +165,6 @@
 				27A1959D151C0A18B549CB74 /* Pods-GatewayDigital-tvOSTests.debug.xcconfig */,
 				CD7977BD9D0C814A8FC23EDD /* Pods-GatewayDigital-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -177,6 +178,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6BB10D20249A408100877C64 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* GatewayDigital */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GatewayDigitalTests */,
@@ -202,13 +204,12 @@
 			sourceTree = "<group>";
 		};
 		D029EC1B74F9495A9FA9B2EA /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				472A58BF17F3455D9C18300B /* GDSfont.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -305,6 +306,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -351,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6BB10D21249A408100877C64 /* GoogleService-Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5165D7796E284D06B80C4084 /* GDSfont.ttf in Resources */,
 			);
