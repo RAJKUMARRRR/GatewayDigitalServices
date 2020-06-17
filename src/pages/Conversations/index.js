@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import AvatarListItem from '../../components/AvatarListItem';
-import PushController from '../../PushController';
+//import PushController from '../../PushController';
 import {loadMessagesSuccess} from '../../store/chat/actions';
 import {
   loadConversations,
@@ -130,7 +130,7 @@ class Conversations extends Component {
             </ScrollView>
           </View>
         </View>
-        {profile && <PushController profile={profile} />}
+        {/*profile && <PushController profile={profile} />*/}
       </>
     );
   }

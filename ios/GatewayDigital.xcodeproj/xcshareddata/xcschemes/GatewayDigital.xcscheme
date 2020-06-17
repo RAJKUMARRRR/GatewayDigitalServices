@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "PostOfficeTests.xctest"
-               BlueprintName = "PostOfficeTests"
+               BuildableName = "GatewayDigitalTests.xctest"
+               BlueprintName = "GatewayDigitalTests"
                ReferencedContainer = "container:GatewayDigital.xcodeproj">
             </BuildableReference>
          </TestableReference>

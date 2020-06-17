@@ -5,7 +5,9 @@ const ChatSection = props => {
   const {title = ''} = props;
   return (
     <View style={styles.main}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.wrapper}>
+         <Text style={styles.title}>{title}</Text>
+      </View>
     </View>
   );
 };
@@ -18,15 +20,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  title: {
+  wrapper: {
     backgroundColor: 'white',
-    textAlign: 'center',
-    color: '#DA1515',
     borderWidth: 1,
     borderColor: '#DA1515',
     borderRadius: 100,
     padding: 10,
     paddingTop: 3,
     paddingBottom: 3,
+  },
+  title: {
+    color: '#DA1515',
+    textAlign: 'center',
   },
 });

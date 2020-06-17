@@ -18,7 +18,7 @@
     "axios": "^0.19.2",
     "jetifier": "^1.6.5",
     "react": "16.11.0",
-    "react-native": "0.62.1",
+    "react-native": "^0.62.1",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-picker": "^2.3.1",

@@ -23,7 +23,7 @@ import {
 import ProgressBar from './components/ProgressBar';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import RNOtpVerify from 'react-native-otp-verify';
+//import RNOtpVerify from 'react-native-otp-verify';
 import HeaderTwo from './components/HeaderTwo';
 import HeaderOne from './components/HeaderOne';
 import {
@@ -37,6 +37,7 @@ import {updateCurrentScreen} from './store/common/actions';
 import {getActiveRouteState} from './utils/navigation';
 import {navigationRef} from './utils/navigation';
 import Countries from './pages/Countries';
+import StatusBarBackground from './components/StatusBarBackground';
 
 const Stack = createStackNavigator();
 
@@ -58,22 +59,22 @@ class MainApp extends Component {
       const otp = /(\d{6})/g.exec(message)[1];
       console.log(otp);
       this.props.updateOtp(otp);
-      RNOtpVerify.removeListener();
+      //RNOtpVerify.removeListener();
     } catch (error) {
       console.log(error);
     }
   };
 
-  getHash = () =>
-    RNOtpVerify.getHash()
+  getHash = () => 1
+    /*RNOtpVerify.getHash()
       .then(console.log)
-      .catch(console.log);
+      .catch(console.log);*/
 
   componentDidMount() {
     this.getHash();
-    RNOtpVerify.getOtp()
+    /*RNOtpVerify.getOtp()
       .then(p => RNOtpVerify.addListener(this.otpHandler))
-      .catch(p => console.log(p));
+      .catch(p => console.log(p));*/
     localStore
       .getItem('authToken')
       .then(token => {
@@ -139,6 +140,7 @@ class MainApp extends Component {
           this.props.updateCurrentScreen(getActiveRouteState(state))
         }
         ref={navigationRef}>
+        <StatusBarBackground/>
         <Stack.Navigator initialRouteName={currentPage}>
           <Stack.Screen
             name={LOGIN}
@@ -155,8 +157,8 @@ class MainApp extends Component {
             initialParams={{conversationId: options.conversationId}}
             options={{
               ...options,
-              ...{headerShown: false},
-              /*...{header: this.getHeaderComponent('chat')},*/
+              //...{headerShown: false},
+              ...{header: ()=>null},
             }}>
             {props => <Chat {...props} />}
           </Stack.Screen>

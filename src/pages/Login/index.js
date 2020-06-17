@@ -130,13 +130,17 @@ class Chat extends Component {
                 <View
                   style={styles.countryCode}
                   onTouchEnd={onSelectCountryClickHandler}>
-                  <Text style={{...styles.mobile, ...styles.countryCodeLabel}}>
-                    {selectedCountryCode.mobileCode}
-                  </Text>
+                  <View style={{...styles.mobile, ...styles.countryCodeLabel}}>
+                    <Text style={styles.mobileText}>
+                      {selectedCountryCode.mobileCode}
+                    </Text>
+                  </View>
                   <Text style={styles.mobileHint}>Select</Text>
                 </View>
                 <View style={styles.mobileNumber}>
-                  <Text style={styles.mobile}>{mobile}</Text>
+                  <View  style={styles.mobile}>
+                      <Text style={styles.mobileText}>{mobile}</Text>
+                  </View>
                   <Text style={styles.mobileHint}>
                     Enter your registered phone number to login
                   </Text>
@@ -234,6 +238,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     backgroundColor: 'white',
+  },
+  mobileText: {
+    color: '#c1c1c1',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
   email: {
     height: 50,
