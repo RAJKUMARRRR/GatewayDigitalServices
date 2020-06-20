@@ -15,6 +15,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Dimensions,
+  Platform
 } from 'react-native';
 import KeyPad from '../../components/KeyPad';
 import {connect} from 'react-redux';
@@ -24,6 +26,7 @@ import {waitContainer} from '../../hoc/waitContainer';
 import {COUNTRY_CODES} from '../../data/servicesUrls';
 import SplashScreen from 'react-native-splash-screen';
 import TextBox from '../../components/TextBox';
+const {width,height} = Dimensions.get("window");
 
 class Chat extends Component {
   constructor(props) {
@@ -199,13 +202,14 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#f1f1f1',
   },
-  logo: {
+  logo: Object.assign({
     width: '100%',
+    //height: height<=700 ? '50%' : '100%',
     marginTop: -50,
     resizeMode: 'contain',
-  },
+  },height<=700?{height:'50%'}:{}),
   mobileWrapper: {
-    marginTop: -50,
+    marginTop:height<=700 ? 0 : -50,
     width: '90%',
     flexDirection: 'row',
   },
@@ -256,13 +260,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
   },
-  loginWrapper: {
-    marginTop: 50,
+  loginWrapper: Object.assign({
     backgroundColor: '#DA1515',
     borderRadius: 100,
     padding: 10,
     width: '70%',
-  },
+  },height<=700?{marginBottom:15}:{marginTop:50}),
   login: {
     color: 'white',
     fontSize: 15,

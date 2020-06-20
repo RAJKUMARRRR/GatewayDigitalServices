@@ -30,12 +30,7 @@ class PushController extends Component {
     alert("registering");
     const {registerDevice, props} = this;
     const onRegistered = (deviceToken) => {
-      alert('Registered For Remote Push', `Device Token: ${deviceToken}`, [
-        {
-          text: 'Dismiss',
-          onPress: null,
-        },
-      ]);
+      console.log('Registered For Remote Push', `Device Token: ${deviceToken}`);
     };
   
     const onRegistrationError = (error) => {
@@ -52,12 +47,7 @@ class PushController extends Component {
         category: ${notification.getCategory()};\n
         content-available: ${notification.getContentAvailable()}.`;
   
-      alert('Push Notification Received', result, [
-        {
-          text: 'Dismiss',
-          onPress: null,
-        },
-      ]);
+      alert('Push Notification Received', result);
     };
 
     PushNotificationIOS.addEventListener('register', onRegistered);
@@ -71,7 +61,7 @@ class PushController extends Component {
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
         alert("on register");
-        console.log("DeviceId",DeviceInfo.getUniqueId());
+        //console.log("DeviceId",DeviceInfo.getUniqueId());
         console.log('TOKEN:', token);
         AsyncStorage.getItem('isRegisteredForPush').then(val => {
           if (!val) {

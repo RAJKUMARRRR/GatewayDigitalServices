@@ -60,6 +60,7 @@
 		2D02E47B1E0B4A5D006451C7 /* GatewayDigital-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GatewayDigital-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* GatewayDigital-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GatewayDigital-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472A58BF17F3455D9C18300B /* GDSfont.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GDSfont.ttf; path = ../assets/fonts/GDSfont.ttf; sourceTree = "<group>"; };
+		6B1DF1F0249E3462002D1CBF /* GatewayDigital.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GatewayDigital.entitlements; path = GatewayDigital/GatewayDigital.entitlements; sourceTree = "<group>"; };
 		6BB10D20249A408100877C64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		805766C8346162C7954EC7AD /* Pods-GatewayDigital-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-tvOS.release.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-tvOS/Pods-GatewayDigital-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		80920DF65F3390AA8AD624B7 /* Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-GatewayDigitalTests/Pods-GatewayDigital-GatewayDigitalTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 		13B07FAE1A68108700A75B9A /* GatewayDigital */ = {
 			isa = PBXGroup;
 			children = (
+				6B1DF1F0249E3462002D1CBF /* GatewayDigital.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -302,12 +304,18 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = N6BXM4MW48;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = YXA9VD4YH9;
 						LastSwiftMigration = 1120;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -605,6 +613,7 @@
 			baseConfigurationReference = 2B251CCE99106EA8D0CE2879 /* Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = N6BXM4MW48;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -629,6 +638,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = N6BXM4MW48;
 				INFOPLIST_FILE = GatewayDigitalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -649,7 +659,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = GatewayDigital/GatewayDigital.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXA9VD4YH9;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -662,8 +676,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bar360.GatewayDigital;
 				PRODUCT_NAME = GatewayDigital;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -676,7 +691,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = GatewayDigital/GatewayDigital.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YXA9VD4YH9;
 				INFOPLIST_FILE = GatewayDigital/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -684,8 +703,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bar360.GatewayDigital;
 				PRODUCT_NAME = GatewayDigital;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
