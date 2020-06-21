@@ -1,124 +1,77 @@
-import React, {Component} from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
-import PushNotification from 'react-native-push-notification';
-import {UPDATE_PROFILE_URL} from './data/servicesUrls';
-import {setItem} from './data/localStore';
+import React, { useEffect } from 'react';
+import { Alert } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import {putRequest} from './data/services';
 import {connect} from 'react-redux';
+import {UPDATE_PROFILE_URL} from './data/servicesUrls';
+import AsyncStorage from '@react-native-community/async-storage';
+import {setItem} from './data/localStore';
 import {sendMessageSuccess} from './store/chat/actions';
 import {CONVERSATIONS, CHAT} from './constants/screens';
 import {loadConversations} from './store/conversations/actions';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import { Alert } from 'react-native';
 
 
-class PushController extends Component {
-  registerDevice = token => {
-    const {profile} = this.props;
-    profile.pushToken = token;
-    putRequest(UPDATE_PROFILE_URL, profile)
-      .then(response => {
-        console.log(JSON.stringify(response.status));
-        setItem('isRegisteredForPush', 'true');
-      })
-      .catch(error => {
-        console.log('Server Down!! Please contact admin.', error);
-      });
-  };
-
-  registerForPushNotification = () => {
-    alert("registering");
-    const {registerDevice, props} = this;
-    const onRegistered = (deviceToken) => {
-      console.log('Registered For Remote Push', `Device Token: ${deviceToken}`);
-    };
-  
-    const onRegistrationError = (error) => {
-      alert(
-        'Failed To Register For Remote Push'+`Error (${error.code}): ${error.message}`
-      );
-      alert(JSON.stringify(error));
-    };
-  
-    const onRemoteNotification = (notification) => {
-      const result = `Message: ${notification.getMessage()};\n
-        badge: ${notification.getBadgeCount()};\n
-        sound: ${notification.getSound()};\n
-        category: ${notification.getCategory()};\n
-        content-available: ${notification.getContentAvailable()}.`;
-  
-      alert('Push Notification Received', result);
+function PushController(props) {
+    registerDevice = token => {
+        const {profile} = props;
+        profile.pushToken = token;
+        putRequest(UPDATE_PROFILE_URL, profile)
+          .then(response => {
+            console.log(JSON.stringify(response.status));
+            setItem('isRegisteredForPush', 'true');
+          })
+          .catch(error => {
+            console.log('Server Down!! Please contact admin.', error);
+          });
     };
 
-    PushNotificationIOS.addEventListener('register', onRegistered);
-    PushNotificationIOS.addEventListener(
-      'registrationError',
-      onRegistrationError,
-    );
-    PushNotificationIOS.addEventListener('notification', onRemoteNotification);
+    useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', remoteMessage);
+      //alert(props.currentScreen);
+      if (props.currentScreen === CHAT) {
+        props.addToChat(JSON.parse(remoteMessage.data.data));
+      }
+      if (props.currentScreen === CONVERSATIONS) {
+        props.updateConversations();
+      }
+  });
+    return unsubscribe;
+  }, []);
 
-    PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function(token) {
-        alert("on register");
-        //console.log("DeviceId",DeviceInfo.getUniqueId());
-        console.log('TOKEN:', token);
+  useEffect(() => {
+    messaging()
+      .getToken()
+      .then(token => {
         AsyncStorage.getItem('isRegisteredForPush').then(val => {
-          if (!val) {
-            registerDevice(token.token);
-          }
+            if (!val) {
+              registerDevice(token);
+            }
         });
-      },
+       });
 
-      onNotification: function(notification) {
-        console.log('NOTIFICATION:', notification);
-        if (props.currentScreen === CHAT) {
-          props.addToChat(notification.data);
-        }
-        if (props.currentScreen === CONVERSATIONS) {
-          props.updateConversations();
-        }
-        // required on iOS only
-        notification.finish(PushNotificationIOS.FetchResult.NoData);
-      },
-      // Android only
-      senderID: '861088027944',
-      // iOS only
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true,
-      },
-      popInitialNotification: true,
-      requestPermissions: true,
+    return messaging().onTokenRefresh(token => {
+      console.log("token",token);
     });
-    //PushNotification.requestPermissions('861088027944');
-  };
-
-  componentDidMount() {
-    const {registerForPushNotification} = this;
-    registerForPushNotification();
-  }
-
-  render() {
-    return null;
-  }
+  }, []);
+  return null;
 }
 
 const mapStateToProps = state => {
-  return {
-    currentScreen: state.common.currentScreen,
+    return {
+      currentScreen: state.common.currentScreen,
+    };
   };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addToChat: message => dispatch(sendMessageSuccess(message)),
-    updateConversations: () => dispatch(loadConversations()),
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      addToChat: message => dispatch(sendMessageSuccess(message)),
+      updateConversations: () => dispatch(loadConversations()),
+    };
   };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PushController);
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(PushController);
+  
