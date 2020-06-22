@@ -1,4 +1,5 @@
 #import <Firebase.h>
+#import <RNSplashScreen.h>
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -12,7 +13,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import "RNSplashScreen.h"
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
