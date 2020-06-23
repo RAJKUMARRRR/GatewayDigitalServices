@@ -157,8 +157,8 @@ class MainApp extends Component {
             initialParams={{conversationId: options.conversationId}}
             options={{
               ...options,
-              //...{headerShown: false},
-              ...{header: ()=>null},
+              ...{headerShown: false},
+              //...{header: ()=>null},
             }}>
             {props => <Chat {...props} />}
           </Stack.Screen>
@@ -168,8 +168,9 @@ class MainApp extends Component {
             options={{
               ...options,
               ...{
+                ...{headerShown: false},
                 transitionSpec: {open: {animation: 'spring'}},
-                header: ()=>null,//this.getHeaderComponent(),
+                //header: ()=>null,//this.getHeaderComponent(),
               },
             }}
           />

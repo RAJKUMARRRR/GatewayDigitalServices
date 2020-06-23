@@ -17,7 +17,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* GatewayDigitalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GatewayDigitalTests.m */; };
 		5165D7796E284D06B80C4084 /* GDSfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 472A58BF17F3455D9C18300B /* GDSfont.ttf */; };
-		6B69FE6D24A10E62006D644E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B69FE6C24A10E62006D644E /* GoogleService-Info.plist */; };
+		6BE4472224A2236900A8C961 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6BE4472124A2236900A8C961 /* GoogleService-Info.plist */; };
 		6D20022F346BF1A7BE7863A8 /* libPods-GatewayDigital-GatewayDigitalTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2973AC60DAD15C0AA5A08C93 /* libPods-GatewayDigital-GatewayDigitalTests.a */; };
 		A106CD0E7E3FDF42A4612F5F /* libPods-GatewayDigital-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A2DE7225745A4FDA0D7CE1 /* libPods-GatewayDigital-tvOSTests.a */; };
 		DAC0796A52FA5FEDF3442188 /* libPods-GatewayDigital-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95196A6660C7877BFBBEE504 /* libPods-GatewayDigital-tvOS.a */; };
@@ -64,7 +64,7 @@
 		4C71F1BC08088B6E211F649A /* Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-GatewayDigitalTests/Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig"; sourceTree = "<group>"; };
 		695C32F08845B80BE56AED70 /* libPods-GatewayDigital.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GatewayDigital.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B1DF1F0249E3462002D1CBF /* GatewayDigital.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GatewayDigital.entitlements; path = GatewayDigital/GatewayDigital.entitlements; sourceTree = "<group>"; };
-		6B69FE6C24A10E62006D644E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../production/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6BE4472124A2236900A8C961 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../production_firebase/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		95196A6660C7877BFBBEE504 /* libPods-GatewayDigital-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GatewayDigital-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B178D2E215A503A86E0F8FFC /* Pods-GatewayDigital-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-tvOSTests/Pods-GatewayDigital-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1A573509271176D37A12AE8 /* Pods-GatewayDigital-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GatewayDigital-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-GatewayDigital-tvOSTests/Pods-GatewayDigital-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				6B69FE6C24A10E62006D644E /* GoogleService-Info.plist */,
+				6BE4472124A2236900A8C961 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* GatewayDigital */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GatewayDigitalTests */,
@@ -305,7 +305,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = N6BXM4MW48;
+						DevelopmentTeam = YXA9VD4YH9;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -366,7 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				6B69FE6D24A10E62006D644E /* GoogleService-Info.plist in Resources */,
+				6BE4472224A2236900A8C961 /* GoogleService-Info.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5165D7796E284D06B80C4084 /* GDSfont.ttf in Resources */,
 			);
@@ -624,7 +624,7 @@
 			baseConfigurationReference = 4C71F1BC08088B6E211F649A /* Pods-GatewayDigital-GatewayDigitalTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = N6BXM4MW48;
+				DEVELOPMENT_TEAM = YXA9VD4YH9;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -649,7 +649,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = N6BXM4MW48;
+				DEVELOPMENT_TEAM = YXA9VD4YH9;
 				INFOPLIST_FILE = GatewayDigitalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
